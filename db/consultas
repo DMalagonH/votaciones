@@ -1,0 +1,6 @@
+SELECT * FROM tbl_candidatos;
+SELECT * FROM tbl_usuarios;
+SELECT * FROM tbl_votaciones;
+
+select * from tbl_candidatos tc
+LEFT JOIN tbl_votaciones tv ON tv.candidato_id = tc.id;
