@@ -8,3 +8,5 @@ services:
     security:
         class: AT\votacionBundle\Services\SecurityService
         arguments: ["@doctrine", "@session"]
+    validate:
+        class: AT\votacionBundle\Services\ValidateService
