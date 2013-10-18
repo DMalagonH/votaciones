@@ -1,0 +1,4 @@
+votacionBundleAnnotations:
+    resource: "@VotacionBundle/Controller/"
+    prefix: /
+    type: annotation

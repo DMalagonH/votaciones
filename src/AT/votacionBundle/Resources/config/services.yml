@@ -1,0 +1,7 @@
+parameters:
+#    votacion.example.class: AT\votacionBundle\Example
+
+services:
+#    votacion.example:
+#        class: %votacion.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,4 @@
+votacion:
+    resource: "@VotacionBundle/Resources/config/routing.yml"
+    prefix:   /
+
