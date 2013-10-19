@@ -1,0 +1,53 @@
+<?php
+
+namespace AT\votacionBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TblCandidatos
+ *
+ * @ORM\Table(name="tbl_candidatos")
+ * @ORM\Entity
+ */
+class TblCandidatos
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_nombre", type="string", length=60, nullable=false)
+     */
+    private $candidatoNombre;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="candidato_no_tarjeton", type="integer", nullable=false)
+     */
+    private $candidatoNoTarjeton;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_imagen", type="string", length=60, nullable=true)
+     */
+    private $candidatoImagen;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_partido", type="string", length=60, nullable=true)
+     */
+    private $candidatoPartido;
+
+
+}

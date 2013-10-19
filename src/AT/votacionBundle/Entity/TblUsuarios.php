@@ -38,6 +38,20 @@ class TblUsuarios
     /**
      * @var string
      *
+     * @ORM\Column(name="usuario_apellido", type="string", length=60, nullable=false)
+     */
+    private $usuarioApellido;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_tipo_documento", type="string", length=60, nullable=true)
+     */
+    private $usuarioTipoDocumento;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="usuario_documento", type="string", length=45, nullable=false)
      */
     private $usuarioDocumento;
@@ -48,34 +62,6 @@ class TblUsuarios
      * @ORM\Column(name="usuario_rol", type="string", length=45, nullable=false)
      */
     private $usuarioRol;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="usuario_password", type="string", length=45, nullable=true)
-     */
-    private $usuarioPassword;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="usuario_hash", type="string", length=100, nullable=true)
-     */
-    private $usuarioHash;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="usuario_apellido", type="string", length=60, nullable=true)
-     */
-    private $usuarioApellido;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="usuario_fecha_nacimiento", type="date", nullable=true)
-     */
-    private $usuarioFechaNacimiento;
 
     /**
      * @var string
@@ -111,6 +97,27 @@ class TblUsuarios
      * @ORM\Column(name="permiso_nuevos_usuarios", type="boolean", nullable=true)
      */
     private $permisoNuevosUsuarios;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="usuario_fecha_nacimiento", type="date", nullable=true)
+     */
+    private $usuarioFechaNacimiento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_password", type="string", length=45, nullable=true)
+     */
+    private $usuarioPassword;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_hash", type="string", length=100, nullable=true)
+     */
+    private $usuarioHash;
 
 
 
@@ -171,6 +178,52 @@ class TblUsuarios
     }
 
     /**
+     * Set usuarioApellido
+     *
+     * @param string $usuarioApellido
+     * @return TblUsuarios
+     */
+    public function setUsuarioApellido($usuarioApellido)
+    {
+        $this->usuarioApellido = $usuarioApellido;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuarioApellido
+     *
+     * @return string 
+     */
+    public function getUsuarioApellido()
+    {
+        return $this->usuarioApellido;
+    }
+
+    /**
+     * Set usuarioTipoDocumento
+     *
+     * @param string $usuarioTipoDocumento
+     * @return TblUsuarios
+     */
+    public function setUsuarioTipoDocumento($usuarioTipoDocumento)
+    {
+        $this->usuarioTipoDocumento = $usuarioTipoDocumento;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuarioTipoDocumento
+     *
+     * @return string 
+     */
+    public function getUsuarioTipoDocumento()
+    {
+        return $this->usuarioTipoDocumento;
+    }
+
+    /**
      * Set usuarioDocumento
      *
      * @param string $usuarioDocumento
@@ -214,98 +267,6 @@ class TblUsuarios
     public function getUsuarioRol()
     {
         return $this->usuarioRol;
-    }
-
-    /**
-     * Set usuarioPassword
-     *
-     * @param string $usuarioPassword
-     * @return TblUsuarios
-     */
-    public function setUsuarioPassword($usuarioPassword)
-    {
-        $this->usuarioPassword = $usuarioPassword;
-    
-        return $this;
-    }
-
-    /**
-     * Get usuarioPassword
-     *
-     * @return string 
-     */
-    public function getUsuarioPassword()
-    {
-        return $this->usuarioPassword;
-    }
-
-    /**
-     * Set usuarioHash
-     *
-     * @param string $usuarioHash
-     * @return TblUsuarios
-     */
-    public function setUsuarioHash($usuarioHash)
-    {
-        $this->usuarioHash = $usuarioHash;
-    
-        return $this;
-    }
-
-    /**
-     * Get usuarioHash
-     *
-     * @return string 
-     */
-    public function getUsuarioHash()
-    {
-        return $this->usuarioHash;
-    }
-
-    /**
-     * Set usuarioApellido
-     *
-     * @param string $usuarioApellido
-     * @return TblUsuarios
-     */
-    public function setUsuarioApellido($usuarioApellido)
-    {
-        $this->usuarioApellido = $usuarioApellido;
-    
-        return $this;
-    }
-
-    /**
-     * Get usuarioApellido
-     *
-     * @return string 
-     */
-    public function getUsuarioApellido()
-    {
-        return $this->usuarioApellido;
-    }
-
-    /**
-     * Set usuarioFechaNacimiento
-     *
-     * @param \DateTime $usuarioFechaNacimiento
-     * @return TblUsuarios
-     */
-    public function setUsuarioFechaNacimiento($usuarioFechaNacimiento)
-    {
-        $this->usuarioFechaNacimiento = $usuarioFechaNacimiento;
-    
-        return $this;
-    }
-
-    /**
-     * Get usuarioFechaNacimiento
-     *
-     * @return \DateTime 
-     */
-    public function getUsuarioFechaNacimiento()
-    {
-        return $this->usuarioFechaNacimiento;
     }
 
     /**
@@ -421,5 +382,74 @@ class TblUsuarios
     public function getPermisoNuevosUsuarios()
     {
         return $this->permisoNuevosUsuarios;
+    }
+
+    /**
+     * Set usuarioFechaNacimiento
+     *
+     * @param \DateTime $usuarioFechaNacimiento
+     * @return TblUsuarios
+     */
+    public function setUsuarioFechaNacimiento($usuarioFechaNacimiento)
+    {
+        $this->usuarioFechaNacimiento = $usuarioFechaNacimiento;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuarioFechaNacimiento
+     *
+     * @return \DateTime 
+     */
+    public function getUsuarioFechaNacimiento()
+    {
+        return $this->usuarioFechaNacimiento;
+    }
+
+    /**
+     * Set usuarioPassword
+     *
+     * @param string $usuarioPassword
+     * @return TblUsuarios
+     */
+    public function setUsuarioPassword($usuarioPassword)
+    {
+        $this->usuarioPassword = $usuarioPassword;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuarioPassword
+     *
+     * @return string 
+     */
+    public function getUsuarioPassword()
+    {
+        return $this->usuarioPassword;
+    }
+
+    /**
+     * Set usuarioHash
+     *
+     * @param string $usuarioHash
+     * @return TblUsuarios
+     */
+    public function setUsuarioHash($usuarioHash)
+    {
+        $this->usuarioHash = $usuarioHash;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuarioHash
+     *
+     * @return string 
+     */
+    public function getUsuarioHash()
+    {
+        return $this->usuarioHash;
     }
 }

@@ -1,16 +1,16 @@
-INSERT INTO tbl_candidatos ('id', 'candidato_nombre', 'candidato_no_tarjeton', 'candidato_imagen') VALUES
-(NULL, 'NCand1', '1', NULL),
-(NULL, 'NCand2', '2', NULL),
-(NULL, 'NCand3', '3', NULL),
-(NULL, 'NCand4', '4', NULL),
-(NULL, 'NCand5', '5', NULL),
-(NULL, 'NCand6', '6', NULL),
-(NULL, 'NCand7', '7', NULL),
-(NULL, 'NCand8', '8', NULL),
-(NULL, 'NCand9', '9', NULL),
-(NULL, 'NCand10', '10', NULL);
+﻿INSERT INTO tbl_candidatos (id, candidato_nombre, candidato_no_tarjeton, candidato_imagen) VALUES
+(NULL, 'NCand1', '1', 'ImgCandidatos/can1.jpg'),
+(NULL, 'NCand2', '2', 'ImgCandidatos/can2.jpg'),
+(NULL, 'NCand3', '3', 'ImgCandidatos/can3.jpg'),
+(NULL, 'NCand4', '4', 'ImgCandidatos/can4.jpg'),
+(NULL, 'NCand5', '5', 'ImgCandidatos/can5.jpg'),
+(NULL, 'NCand6', '6', 'ImgCandidatos/can6.jpg'),
+(NULL, 'NCand7', '7', 'ImgCandidatos/can7.jpg'),
+(NULL, 'NCand8', '8', 'ImgCandidatos/can8.jpg'),
+(NULL, 'NCand9', '9', 'ImgCandidatos/can9.jpg'),
+(NULL, 'NCand10', '10', 'ImgCandidatos/can10.jpg');
 
-INSERT INTO tbl_usuarios ('id', 'usuario_email', 'usuario_nombre', 'usuario_apellido', 'usuario_documento', 'usuario_rol') VALUES
+INSERT INTO tbl_usuarios (id, usuario_email, usuario_nombre, usuario_apellido, usuario_documento, usuario_rol) VALUES
 (NULL, 'mail1@test.com', 'name1', 'apellido1', 'doc1', null),
 (NULL, 'mail2@test.com', 'name2', 'apellido2', 'doc2', null),
 (NULL, 'mail3@test.com', 'name3', 'apellido3', 'doc3', null),
@@ -21,5 +21,3 @@ INSERT INTO tbl_usuarios ('id', 'usuario_email', 'usuario_nombre', 'usuario_apel
 (NULL, 'mail8@test.com', 'name8', 'apellido8', 'doc8', null),
 (NULL, 'mail9@test.com', 'name9', 'apellido9', 'doc9', null),
 (NULL, 'mail10@test.com', 'name10', 'apellido10', 'doc10', null);
-
-

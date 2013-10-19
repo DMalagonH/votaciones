@@ -60,7 +60,7 @@ DROP TABLE IF EXISTS `tbl_votaciones` ;
 
 SHOW WARNINGS;
 CREATE  TABLE IF NOT EXISTS `tbl_votaciones` (
-  `id` VARCHAR(45) NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `usuario_id` INT NOT NULL ,
   `candidato_id` INT NOT NULL ,
   `voto_validado` TINYINT(1)  NOT NULL ,
@@ -79,6 +79,22 @@ CREATE  TABLE IF NOT EXISTS `tbl_votaciones` (
     REFERENCES `tbl_candidatos` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `token`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `token` ;
+
+SHOW WARNINGS;
+CREATE  TABLE IF NOT EXISTS `token` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `email` VARCHAR(60) NOT NULL ,
+  `hash` VARCHAR(80) NULL ,
+  `token` VARCHAR(80) NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
