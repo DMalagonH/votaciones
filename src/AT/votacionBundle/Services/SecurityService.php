@@ -54,6 +54,86 @@ class SecurityService
         return $pass;
     }
     
+    /**
+     * Funcion para validar un token
+     * 
+     * Verifica que el token sea valido y lo elimina
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param string $token_uri token recibido por la uri
+     * @param boolean $delete indica si se debe eliminar o no el token una vez validado
+     * @return boolean
+     */
+    public function validateToken($token_uri, $delete = true)
+    {
+        $valid = false;
+        
+        if($this->validateBase64($token_uri))
+        {        
+            $dec_token = base64_decode($token_uri, true);
+
+            $explode = explode('/', $dec_token);
+            $email = (isset($explode[0])) ? $explode[0] : false;
+            $hash = (isset($explode[1])) ? $explode[1] : false;
+            $token = (isset($explode[2])) ? $explode[2] : false;    
+
+            if($email && $hash && $token)
+            {        
+                $enc_token = $this->encriptar($dec_token);
+
+                $dql = "SELECT COUNT(t.id) c FROM votacionBundle:Token t
+                        WHERE t.email = :email AND t.hash = :hash AND t.token = :token";
+                $query = $this->em->createQuery($dql);
+                $query->setParameter('email', $email);
+                $query->setParameter('hash', $hash);
+                $query->setParameter('token', $enc_token);
+                $result = $query->getResult();
+
+                if(isset($result[0]['c']))
+                {
+                    if($result[0]['c'] == 1)
+                    {
+                        $valid = true;
+
+                        //Eliminar token
+                        if($delete)
+                        {
+                            $dql = "DELETE FROM votacionBundle:Token t
+                                    WHERE t.email = :email AND t.hash = :hash AND t.token = :token";
+                            $query = $this->em->createQuery($dql);
+                            $query->setParameter('email', $email);
+                            $query->setParameter('hash', $hash);
+                            $query->setParameter('token', $enc_token);
+                            $query->getResult();
+                        }
+                    }
+                }
+            }
+        }
+        return $valid;
+    }
+    
+    /**
+     * Funcion para validar base64
+     * 
+     * @param string $code64 cadena codificada en base64
+     * @return boolean
+     */
+    public function validateBase64($code64)
+    {
+        $validate = false;
+        $dec = base64_decode($code64, true);
+        
+        $enc = base64_encode($dec);
+        
+        $val_deco = base64_decode($enc, true);
+        
+        if($val_deco !== false)
+        {
+            $validate = true;
+        }
+        return $validate;
+    }
     
     
     /**

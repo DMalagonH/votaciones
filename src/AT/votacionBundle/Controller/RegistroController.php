@@ -50,6 +50,7 @@ class RegistroController extends Controller
                         $usuario->setUsuarioApellido($data['apellido']);
                         $usuario->setUsuarioEmail($data['email']);
                         $usuario->setUsuarioDocumento($data['doc']);
+                        $usuario->setUsuarioTipoDocumento('Cédula de ciudadanía');
                         $usuario->setUsuarioProfesion($data['profesion']);
                         $usuario->setUsuarioTelefono($data['telefono']);
                         $usuario->setUsuarioCelular($data['celular']);
@@ -72,7 +73,7 @@ class RegistroController extends Controller
                 }
                 else
                 {
-                    $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
+                    $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "*Datos inválidos:", "text" => "Verifique la información suministrada"));
                 }                  
             }
             else
@@ -110,9 +111,9 @@ class RegistroController extends Controller
            ->add('nombre', 'text', array('required' => true))
            ->add('apellido', 'text', array('required' => true))
            ->add('email', 'email', array('required' => true))
-           ->add('doc', 'number', array('required' => true))
-           ->add('celular', 'number', array('required' => false))
-           ->add('telefono', 'number', array('required' => false))
+           ->add('doc', 'text', array('required' => true))
+           ->add('celular', 'text', array('required' => false))
+           ->add('telefono', 'text', array('required' => false))
            ->add('profesion', 'text', array('required' => false))
            ->add('pass', 'password', array('required' => true))
            ->add('pass_conf', 'password', array('required' => true))
@@ -140,7 +141,7 @@ class RegistroController extends Controller
         $val['doc'] = $validate->validateInteger($data['doc'], true);
         $val['celular'] = $validate->validateInteger($data['celular'], false);
         $val['telefono'] = $validate->validateInteger($data['telefono'], false);
-        $val['profesion'] = $validate->validateInteger($data['profesion'], false);
+        $val['profesion'] = $validate->validateTextOnly($data['profesion'], false);
         
         // Validar password
         $val['pass'] = false;
@@ -207,26 +208,30 @@ class RegistroController extends Controller
     private function enviarCorreoConfirmacion($email, $hash)
     {
         $mail = $this->get('mail');
+        $security = $this->get('security');
         
-        $link_hash = uniqid('l');
+        //Crear token
+        $link_hash = uniqid('l', true);        
+        $enc_token = $security->encriptar($email.'/'.$hash.'/'.$link_hash);
+        $strtoken = base64_encode($email.'/'.$hash.'/'.$link_hash);
+                
+        $token = new \AT\votacionBundle\Entity\Token();
+        $token->setEmail($email);
+        $token->setHash($hash);
+        $token->setToken($enc_token);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($token);     
+        $em->flush();
         
-        $token = base64_encode($email.'/'.$hash.'/'.$link_hash);
         
-        $link = $this->getRequest()->getSchemeAndHttpHost().$this->generateUrl('activar', array('token' => $token));
+        // Enviar correo con link
+        $link = $this->getRequest()->getSchemeAndHttpHost().$this->generateUrl('activar', array('token' => $strtoken));
         
         $body = '
-            Confirme su registro para las votaciones dando click <a href="'.$link.'">aqui</a>
+            Confirme su registro para las votaciones haciendo click <a href="'.$link.'">aqui</a>
         ';        
         
-        $mail = \Swift_Message::newInstance()
-            ->setSubject('Confirmación de registro')
-            ->setFrom('diego@altactic.com', 'Votaciones')
-            ->setTo($email)
-            ->setBody($this->renderView('::mail.html.twig', array('body' => $body)), 'text/html');
-        
-        $this->get('mailer')->send($mail);
-        
-//        $mail->sendMail($email, 'Confirmación de registro', array('body' => $body));
+        $mail->sendMail($email, 'Confirmación de registro', array('body' => $body));
     }
     
     /**
@@ -249,10 +254,38 @@ class RegistroController extends Controller
      * 
      * @author Diego Malagón <diego@altactic.com>
      * @Route("/activar/{token}", name="activar")
-     * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    public function activarUsuarioAction(Request $request, $token)
+    public function activarUsuarioAction($token)
     {
+        $security = $this->get('security');
+        
+        $valid = $security->validateToken($token, false);
+        
+        if($valid)
+        {
+            //Activar usuario
+            $dec_token = base64_decode($token, true);
+            $explode = explode('/', $dec_token);
+            $email = $explode[0];
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $dql = "UPDATE votacionBundle:TblUsuarios u
+                    SET u.usuarioActivado = :activado
+                    WHERE u.usuarioEmail = :email";
+            $query = $em->createQuery($dql);
+            $query->setParameter('email', $email);
+            $query->setParameter('activado', true);
+            $query->getResult();  
+            
+            $this->get('session')->getFlashBag()->add('alerts', array("type" => "success", "title" => "Usuario validado", "text" => "ahora puede iniciar sesión y votar por su candidato"));
+            return $this->redirect($this->generateUrl('login'));
+        }       
+        else 
+        {
+            $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "El enlace a caducado", "text" => "Por favor intente registrarse nuevamente"));
+            return $this->redirect($this->generateUrl('registro'));
+        }
         
         return new Response();
     }

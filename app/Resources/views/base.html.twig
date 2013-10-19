@@ -111,11 +111,12 @@
 						</ul>
 					</div>
 					<nav>
-						<ul class="nav nav-pills nav-main" id="mainMenu">							
-							<li>
-								<a href="{{ path('registro') }}">Registrarse</a>
+						<ul class="nav nav-pills nav-main" id="mainMenu">
+                            {% set route = app.request.attributes.get('_route') %}
+							<li class="{% if route == 'registro' %}active{% endif %}">
+								<a href="{{ path('registro') }}" >Registrarse</a>
 							</li>
-							<li>
+							<li class="{% if route == 'login' %}active{% endif %}">
 								<a href="{{ path('login') }}">Login</a>
 							</li>
 						</ul>
