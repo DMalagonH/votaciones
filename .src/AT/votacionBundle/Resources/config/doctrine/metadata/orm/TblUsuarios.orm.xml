@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="TblUsuarios" table="tbl_usuarios">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="usuarioEmail" type="string" column="usuario_email" length="60" nullable="false"/>
+    <field name="usuarioNombre" type="string" column="usuario_nombre" length="60" nullable="false"/>
+    <field name="usuarioDocumento" type="string" column="usuario_documento" length="45" nullable="false"/>
+    <field name="usuarioRol" type="string" column="usuario_rol" length="45" nullable="false"/>
+    <field name="usuarioPassword" type="string" column="usuario_password" length="45" nullable="true"/>
+    <field name="usuarioHash" type="string" column="usuario_hash" length="100" nullable="true"/>
+    <field name="usuarioApellido" type="string" column="usuario_apellido" length="60" nullable="true"/>
+    <field name="usuarioFechaNacimiento" type="date" column="usuario_fecha_nacimiento" nullable="true"/>
+    <field name="usuarioProfesion" type="string" column="usuario_profesion" length="60" nullable="true"/>
+    <field name="usuarioTelefono" type="string" column="usuario_telefono" length="45" nullable="true"/>
+    <field name="usuarioCelular" type="string" column="usuario_celular" length="45" nullable="true"/>
+    <field name="usuarioActivado" type="boolean" column="usuario_activado" nullable="true"/>
+    <field name="permisoNuevosUsuarios" type="boolean" column="permiso_nuevos_usuarios" nullable="true"/>
+  </entity>
+</doctrine-mapping>
