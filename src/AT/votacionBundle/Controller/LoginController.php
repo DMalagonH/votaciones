@@ -25,7 +25,7 @@ class LoginController extends Controller
         $security = $this->get('security');
         $validate = $this->get('validate');
         
-        
+        echo $security->encriptar('1234');
         
         return new Response();
     }
