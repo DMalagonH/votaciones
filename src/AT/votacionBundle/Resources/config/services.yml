@@ -4,3 +4,6 @@ services:
         arguments: ["@doctrine", "@session"]
     validate:
         class: AT\votacionBundle\Services\ValidateService
+    mail:
+        class: AT\votacionBundle\Services\MailService
+        arguments: ["@mailer", "@templating"]

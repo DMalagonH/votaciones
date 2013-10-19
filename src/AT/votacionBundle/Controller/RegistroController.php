@@ -38,6 +38,7 @@ class RegistroController extends Controller
                     if(!$this->existeUsuario($data['email'], $data['doc']))
                     {
                         $enc_pass = $security->encriptar($data['pass']);
+                        $hash = uniqid('u', true);
 
                         $usuario = new \AT\votacionBundle\Entity\TblUsuarios();
 
@@ -54,11 +55,13 @@ class RegistroController extends Controller
                         $usuario->setUsuarioCelular($data['celular']);
 
                         $usuario->setUsuarioPassword($enc_pass);
-                        $usuario->setUsuarioHash(uniqid('user', true));
+                        $usuario->setUsuarioHash($hash);
 
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($usuario);     
                         $em->flush();
+                        
+                        $this->enviarCorreoConfirmacion($data['email'], $hash);
                         
                         return $this->redirect($this->generateUrl('inactivo'));
                     }
@@ -121,6 +124,7 @@ class RegistroController extends Controller
     /**
      * Funcion para validar los datos del formulario
      * 
+     * @author Diego Malagón <diego@altactic.com>
      * @param Array $data array con los campos del formulario
      * @return boolean
      */
@@ -194,6 +198,38 @@ class RegistroController extends Controller
     }
 
     /**
+     * Funcion para enviar correo de confirmacion de registro
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param string $email email del usario
+     * @param string $hash hash del usuario
+     */
+    private function enviarCorreoConfirmacion($email, $hash)
+    {
+        $mail = $this->get('mail');
+        
+        $link_hash = uniqid('l');
+        
+        $token = base64_encode($email.'/'.$hash.'/'.$link_hash);
+        
+        $link = $this->getRequest()->getSchemeAndHttpHost().$this->generateUrl('activar', array('token' => $token));
+        
+        $body = '
+            Confirme su registro para las votaciones dando click <a href="'.$link.'">aqui</a>
+        ';        
+        
+        $mail = \Swift_Message::newInstance()
+            ->setSubject('Confirmación de registro')
+            ->setFrom('diego@altactic.com', 'Votaciones')
+            ->setTo($email)
+            ->setBody($this->renderView('::mail.html.twig', array('body' => $body)), 'text/html');
+        
+        $this->get('mailer')->send($mail);
+        
+//        $mail->sendMail($email, 'Confirmación de registro', array('body' => $body));
+    }
+    
+    /**
      * Accion index para los usuarios inactivos
      * 
      * muestra un mensaje que le indica que debe confirmar su registro a travez de email
@@ -208,5 +244,17 @@ class RegistroController extends Controller
         return array();
     }
     
+    /**
+     * Accion para activa un usuario a traves del token en la uri
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @Route("/activar/{token}", name="activar")
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    public function activarUsuarioAction(Request $request, $token)
+    {
+        
+        return new Response();
+    }
 }
 ?>
