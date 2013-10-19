@@ -1,34 +1,70 @@
-<html>
-    <head></head>
-    <body>
+{% extends "::base.html.twig" %}
+{% block style %}
+<style>
+    .input-large{
+        width: 100%;
+    }
+    .td-label{
+        width:190px;
+    }
+</style>
+{% endblock style %}
+{% block content %}
+<div class="row">
+    <div class="span3">	</div>				  
+    <div class="span6">					  
+        <h2 class="short"><strong>Regístrese para votar</strong></h2>
     
-    
-        <form action="{{ path('registro') }}" method='POST' {{ form_enctype(form) }}>
-           
+        <form action="{{ path('registro') }}" method='POST' {{ form_enctype(form) }} id="contactForm" type="post">
+
             {{ form_widget(form._token) }}
             {{ form_errors(form) }}
-            (*) Campos obligatorios</br>
-            *Nombres: 
-            {{ form_widget(form.nombre, {'attr':{'class':'', 'autofocus':''} }) }}  <br/>
-            *Apellidos
-            {{ form_widget(form.apellido, {'attr':{'class':''} }) }}  <br/>
-            *Correo electrónico
-            {{ form_widget(form.email, {'attr':{'class':''} }) }}  <br/>
-            *Cédula
-            {{ form_widget(form.doc, {'attr':{'class':''} }) }}  <br/>
-            Móvil:
-            {{ form_widget(form.celular, {'attr':{'class':''} }) }}  <br/>
-            Teléfono:
-            {{ form_widget(form.telefono, {'attr':{'class':''} }) }}  <br/>
-            Profesión:
-            {{ form_widget(form.profesion, {'attr':{'class':''} }) }}  <br/>
-            *Constraseña:
-            {{ form_widget(form.pass, {'attr':{'class':''} }) }}  <br/>
-            *Confirme su constraseña:
-            {{ form_widget(form.pass_conf, {'attr':{'class':''} }) }}  <br/>
-            
-            <input type="submit" />
+            (*) Campos obligatorios<br/><br/>
+            <table border="0" style="width:100%;">
+                <tr>
+                    <td class="td-label">Nombres * </td>
+                    <td>{{ form_widget(form.nombre, {'attr':{'class':'input-large', 'autofocus':''} }) }}</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Apellidos *</td>
+                    <td>{{ form_widget(form.apellido, {'attr':{'class':'input-large'} }) }}</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Correo electrónico *</td>
+                    <td>{{ form_widget(form.email, {'attr':{'class':'input-large'} }) }}</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Cédula *</td>
+                    <td>{{ form_widget(form.doc, {'attr':{'class':'input-large'} }) }}</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Móvil</td>
+                    <td>{{ form_widget(form.celular, {'attr':{'class':'input-large'} }) }}</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Teléfono</td>
+                    <td>{{ form_widget(form.telefono, {'attr':{'class':'input-large'} }) }}</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Profesión</td>
+                    <td>{{ form_widget(form.profesion, {'attr':{'class':'input-large'} }) }}</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Constraseña *</td>
+                    <td>{{ form_widget(form.pass, {'attr':{'class':'input-large'} }) }}</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Confirme su constraseña *</td>
+                    <td>{{ form_widget(form.pass_conf, {'attr':{'class':'input-large'} }) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: right;">
+                        <input type="submit" class="btn btn-primary btn-large" value="Registrar"/>
+                    </td>
+                </tr>
+            </table>
         </form>
-    
-    </body>
-</html>
+    </div>
+    <div class="span3">	</div>	
+</div>
+{% endblock content %}

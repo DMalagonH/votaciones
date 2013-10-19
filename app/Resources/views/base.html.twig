@@ -68,7 +68,7 @@
 		<meta property="fb:app_id" content=""/>
 		<meta property="og:description" content="Porto - Responsive HTML5 Template"/>
 		-->
-        {% block stylesheets %}{% endblock %}
+        {% block style %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         
 	</head>
@@ -247,24 +247,9 @@
 					</div>
 
 					<div class="container">
-
-						
-
+                        {% block body %}{% endblock %}
+                        {% block content %}{% endblock %}
 					</div>
-
-					<div class="home-concept">
-						<div class="container">
-
-							<div class="row center">
-								{% block body %}{% endblock %}
-								{% block content %}{% endblock %}
-							</div>
-
-
-						</div>
-					</div>
-
-
 				</div>
 			</div>
 

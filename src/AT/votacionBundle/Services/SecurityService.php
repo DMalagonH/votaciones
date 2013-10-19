@@ -55,5 +55,26 @@ class SecurityService
     }
     
     
+    
+    /**
+     * Funcion para imprimir la estructura de una variable
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param type $var variable a depurar
+     */
+    public function debug($var)
+    {
+        if(is_object($var) || is_array($var))
+        {
+            echo "<pre>";
+            print_r($var);
+            echo "</pre>";
+        }
+        else
+        {
+            var_dump($var);
+        }
+    }
+    
 }
 ?>
