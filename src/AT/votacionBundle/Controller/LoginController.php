@@ -15,7 +15,7 @@ class LoginController extends Controller
     /**
      * Accion para login de la aplicacion
      * 
-     * @Route("/", name="login")
+     * @Route("/login", name="login")
      * @author Diego Malagón <diego@altactic.com>
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return Resonse
