@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="TblCandidatos" table="tbl_candidatos">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="candidatoNombre" type="string" column="candidato_nombre" length="60" nullable="false"/>
+    <field name="candidatoNoTarjeton" type="integer" column="candidato_no_tarjeton" nullable="false"/>
+    <field name="candidatoImagen" type="string" column="candidato_imagen" length="60" nullable="true"/>
+    <field name="candidatoPartido" type="string" column="candidato_partido" length="60" nullable="true"/>
+  </entity>
+</doctrine-mapping>
