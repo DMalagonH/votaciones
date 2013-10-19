@@ -68,7 +68,7 @@
 		<meta property="fb:app_id" content=""/>
 		<meta property="og:description" content="Porto - Responsive HTML5 Template"/>
 		-->
-        {% block stylesheets %}{% endblock %}
+        {% block style %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         
 	</head>
@@ -111,215 +111,32 @@
 						</ul>
 					</div>
 					<nav>
-						<ul class="nav nav-pills nav-main" id="mainMenu">
-							<li class="dropdown active">
-								<a class="dropdown-toggle" href="index.html">
-									Home
-									<i class="icon-angle-down"></i>
-								</a>
-								<ul class="dropdown-menu">
-									<li class="dropdown-submenu">
-										<a href="#">Sliders</a>
-										<ul class="dropdown-menu">
-											<li><a href="index.html">Revolution Slider</a></li>
-											<li><a href="index-slider-2.html">Nivo Slider</a></li>
-										</ul>
-									</li>
-									<li><a href="index.html">Home Version 1</a></li>
-									<li><a href="index-2.html">Home Version 2</a></li>
-									<li><a href="index-one-page.html">One Page Website</a></li>
-								</ul>
+						<ul class="nav nav-pills nav-main" id="mainMenu">							
+							<li>
+								<a href="{{ path('registro') }}">Registrarse</a>
 							</li>
 							<li>
-								<a href="about-us.html">About Us</a>
-							</li>
-							<li class="dropdown">
-								<a class="dropdown-toggle" href="#">
-									Features
-									<i class="icon-angle-down"></i>
-								</a>
-								<ul class="dropdown-menu">
-									<li class="dropdown-submenu">
-										<a href="#">Headers</a>
-										<ul class="dropdown-menu">
-											<li><a href="index.html">Header Version 1</a></li>
-											<li><a href="index-header-2.html">Header Version 2</a></li>
-											<li><a href="index-header-3.html">Header Version 3</a></li>
-											<li><a href="index-header-4.html">Header Version 4</a></li>
-											<li><a href="index-header-5.html">Header Version 5</a></li>
-											<li><a href="index-header-6.html">Header Version 6</a></li>
-										</ul>
-									</li>
-									<li class="dropdown-submenu">
-										<a href="#">Footers</a>
-										<ul class="dropdown-menu">
-											<li><a href="index.html#footer">Footer Version 1</a></li>
-											<li><a href="index-footer-2.html#footer">Footer Version 2</a></li>
-											<li><a href="index-footer-3.html#footer">Footer Version 3</a></li>
-											<li><a href="index-footer-4.html#footer">Footer Version 4</a></li>
-										</ul>
-									</li>
-									<li class="dropdown-submenu">
-										<a href="#">Blog</a>
-										<ul class="dropdown-menu">
-											<li><a href="blog-full-width.html">Blog Full Width</a></li>
-											<li><a href="blog-large-image.html">Blog Large Image</a></li>
-											<li><a href="blog-medium-image.html">Blog Medium Image</a></li>
-											<li><a href="blog-post.html">Single Post</a></li>
-										</ul>
-									</li>
-									<li><a href="feature-grid-system.html">Grid System</a></li>
-									<li><a href="feature-pricing-tables.html">Pricing Tables</a></li>
-									<li><a href="feature-icons.html">Icons</a></li>
-									<li><a href="feature-elements.html">Elements</a></li>
-									<li><a href="feature-animations.html">Animations</a></li>
-									<li><a href="feature-typograpy.html">Typograpy</a></li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a class="dropdown-toggle" href="#">
-									Portfolio
-									<i class="icon-angle-down"></i>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="portfolio-2-columns.html">2 Columns</a></li>
-									<li><a href="portfolio-3-columns.html">3 Columns</a></li>
-									<li><a href="portfolio-4-columns.html">4 Columns</a></li>
-									<li><a href="portfolio-single-project.html">Single Project</a></li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a class="dropdown-toggle" href="#">
-									Pages
-									<i class="icon-angle-down"></i>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="page-full-width.html">Full width</a></li>
-									<li><a href="page-left-sidebar.html">Left sidebar</a></li>
-									<li><a href="page-right-sidebar.html">Right sidebar</a></li>
-									<li><a href="page-custom-header.html">Custom Header</a></li>
-									<li><a href="page-404.html">404 Error</a></li>
-									<li><a href="page-team.html">Team</a></li>
-									<li><a href="page-services.html">Services</a></li>
-									<li><a href="page-careers.html">Careers</a></li>
-									<li><a href="page-faq.html">FAQ</a></li>
-									<li><a href="sitemap.html">Sitemap</a></li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a class="dropdown-toggle" href="contact-us.html">
-									Contact Us
-									<i class="icon-angle-down"></i>
-								</a>
-								<ul class="dropdown-menu">
-
-									<li><a href="contact-us.html">Version 1</a></li>
-									<li><a href="contact-us-2.html">Version 2</a></li>
-								</ul>
+								<a href="{{ path('login') }}">Login</a>
 							</li>
 						</ul>
 					</nav>
 				</div>
 			</header>
-
+            <hr class="" />
 			<div role="main" class="main">
 				<div id="content" class="content full">
 
-					<div class="home-intro">
-						<div class="container">
-
-							<div class="row">
-								<div class="span8">
-									<p>
-										The fastest way to grow your business with the leader in <em>Technology.</em>
-										<span>Check out our options and features included.</span>
-									</p>
-								</div>
-								<div class="span4">
-									<div class="get-started">
-										<a href="#" class="btn btn-large btn-primary">Get Started Now!</a>
-										<div class="learn-more">or <a href="index.html">learn more.</a></div>
-									</div>
-								</div>
-							</div>
-
-						</div>
+                    <div class="container">
+                        {% include '::alerts.html.twig' %}
+                        {% block body %}{% endblock %}
+                        {% block content %}{% endblock %}
 					</div>
-
-					<div class="container">
-
-						
-
-					</div>
-
-					<div class="home-concept">
-						<div class="container">
-
-							<div class="row center">
-								{% block body %}{% endblock %}
-								{% block content %}{% endblock %}
-							</div>
-
-
-						</div>
-					</div>
-
-
 				</div>
 			</div>
 
-			<footer id="footer">
-				<div class="container">
-					<div class="row">
-						<div class="footer-ribon">
-							<span>Get in Touch</span>
-						</div>
-						<div class="span3">
-							<h4>Newsletter</h4>
-							<p>Keep up on our always evolving product features and technology. Enter your e-mail and subscribe to our newsletter.</p>
-
-							<div class="alert alert-success hidden" id="newsletterSuccess">
-								<strong>Success!</strong> You've been added to our email list.
-							</div>
-
-							<div class="alert alert-error hidden" id="newsletterError"></div>
-
-							<form class="form-inline" id="newsletterForm" action="php/newsletter-subscribe.php" method="POST">
-								<div class="control-group">
-									<div class="input-append">
-										<input class="span2" placeholder="Email Address" name="email" id="email" type="text">
-										<button class="btn" type="submit">Go!</button>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="span3">
-							<h4>Latest Tweet</h4>
-							
-						</div>
-						<div class="span4">
-							<div class="contact-details">
-								<h4>Contact Us</h4>
-								<ul class="contact">
-									<li><p><i class="icon-map-marker"></i> <strong>Address:</strong> 1234 Street Name, City Name, United States</p></li>
-									<li><p><i class="icon-phone"></i> <strong>Phone:</strong> (123) 456-7890</p></li>
-									<li><p><i class="icon-envelope"></i> <strong>Email:</strong> <a href="mailto:mail@example.com">mail@example.com</a></p></li>
-								</ul>
-							</div>
-						</div>
-						<div class="span2">
-							<h4>Follow Us</h4>
-							<div class="social-icons">
-								<ul class="social-icons">
-									<li class="facebook"><a href="http://www.facebook.com/" target="_blank" data-placement="bottom" rel="tooltip" title="Facebook">Facebook</a></li>
-									<li class="twitter"><a href="http://www.twitter.com/" target="_blank" data-placement="bottom" rel="tooltip" title="Twitter">Twitter</a></li>
-									<li class="linkedin"><a href="http://www.linkedin.com/" target="_blank" data-placement="bottom" rel="tooltip" title="Linkedin">Linkedin</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="footer-copyright">
+			<footer id="footer" style="padding:0px;">
+				
+				<div class="footer-copyright" style="margin-top:0px;">
 					<div class="container">
 						<div class="row">
 							<div class="span1">
@@ -328,16 +145,7 @@
 								</a>
 							</div>
 							<div class="span7">
-								<p>© Copyright 2013 by Crivos. All Rights Reserved.</p>
-							</div>
-							<div class="span4">
-								<nav id="sub-menu">
-									<ul>
-										<li><a href="page-faq.html">FAQ's</a></li>
-										<li><a href="sitemap.html">Sitemap</a></li>
-										<li><a href="contact-us.html">Contact</a></li>
-									</ul>
-								</nav>
+                                <p>© Copyright 2013 por <a href="http://www.altactic.com" target="_blank">Altactic</a>. Todos los derechos reservados.</p>
 							</div>
 						</div>
 					</div>
@@ -371,7 +179,7 @@
 		<script src="{{ asset('js/theme.js') }}"></script>
 
 		<!-- Custom JS -->
-		<!--<script src="{{ asset('js/custom.js') }}"></script>-->
+		<script src="{{ asset('js/custom.js') }}"></script>
        
         {% block script %}{% endblock %}
 	</body>

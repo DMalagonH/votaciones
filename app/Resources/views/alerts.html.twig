@@ -1,0 +1,8 @@
+{% set flashbag = app.session.flashbag.get('alerts') %}
+
+{% for alert in flashbag %}
+    <div class="alert alert-{{ alert.type|default('info') }}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{ alert.title }}</strong> {{ alert.text }}
+    </div>
+{% endfor %}
