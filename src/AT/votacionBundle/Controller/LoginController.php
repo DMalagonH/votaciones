@@ -22,10 +22,10 @@ class LoginController extends Controller
      */
     public function loginAction(Request $request)
     {
-        $security = $this->get('security');
+//        $security = $this->get('security');
         $validate = $this->get('validate');
         
-        echo $security->encriptar('1234');
+//        echo $security->encriptar('1234');
         
         return new Response();
     }

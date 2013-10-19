@@ -1,6 +1,3 @@
-parameters:
-#    votacion.example.class: AT\votacionBundle\Example
-
 services:
     security:
         class: AT\votacionBundle\Services\SecurityService
