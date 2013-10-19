@@ -1,0 +1,123 @@
+<?php
+
+namespace AT\votacionBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TblUsuarios
+ *
+ * @ORM\Table(name="tbl_usuarios")
+ * @ORM\Entity
+ */
+class TblUsuarios
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_email", type="string", length=60, nullable=false)
+     */
+    private $usuarioEmail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_nombre", type="string", length=60, nullable=false)
+     */
+    private $usuarioNombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_apellido", type="string", length=60, nullable=false)
+     */
+    private $usuarioApellido;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_tipo_documento", type="string", length=60, nullable=true)
+     */
+    private $usuarioTipoDocumento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_documento", type="string", length=45, nullable=false)
+     */
+    private $usuarioDocumento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_rol", type="string", length=45, nullable=false)
+     */
+    private $usuarioRol;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_profesion", type="string", length=60, nullable=true)
+     */
+    private $usuarioProfesion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_telefono", type="string", length=45, nullable=true)
+     */
+    private $usuarioTelefono;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_celular", type="string", length=45, nullable=true)
+     */
+    private $usuarioCelular;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="usuario_activado", type="boolean", nullable=true)
+     */
+    private $usuarioActivado;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="permiso_nuevos_usuarios", type="boolean", nullable=true)
+     */
+    private $permisoNuevosUsuarios;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="usuario_fecha_nacimiento", type="date", nullable=true)
+     */
+    private $usuarioFechaNacimiento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_password", type="string", length=45, nullable=true)
+     */
+    private $usuarioPassword;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario_hash", type="string", length=100, nullable=true)
+     */
+    private $usuarioHash;
+
+
+}

@@ -1,0 +1,66 @@
+<?php
+
+namespace AT\votacionBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TblVotaciones
+ *
+ * @ORM\Table(name="tbl_votaciones")
+ * @ORM\Entity
+ */
+class TblVotaciones
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="voto_validado", type="boolean", nullable=false)
+     */
+    private $votoValidado;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="voto_fecha", type="datetime", nullable=false)
+     */
+    private $votoFecha;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="usuario_id_validador", type="boolean", nullable=true)
+     */
+    private $usuarioIdValidador;
+
+    /**
+     * @var \TblUsuarios
+     *
+     * @ORM\ManyToOne(targetEntity="TblUsuarios")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
+     */
+    private $usuario;
+
+    /**
+     * @var \TblCandidatos
+     *
+     * @ORM\ManyToOne(targetEntity="TblCandidatos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="candidato_id", referencedColumnName="id")
+     * })
+     */
+    private $candidato;
+
+
+}

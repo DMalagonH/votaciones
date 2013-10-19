@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class TblVotaciones
 {
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="id", type="string", length=45, nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -67,7 +67,7 @@ class TblVotaciones
     /**
      * Get id
      *
-     * @return string 
+     * @return integer 
      */
     public function getId()
     {

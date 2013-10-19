@@ -1,0 +1,29 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <div class="body">
+        <div role="main" class="main">
+            <div class="container">        
+                <div class="row">
+                    <ul class="simple-post-list">
+                        {% for candidato in candidatos%}
+                            <li style='padding-top:0px;'>
+                                <div class="post-image">
+                                    <div class="thumbnail">
+                                        <img src="{{ asset('ImgCandidatos/can1.jpg') }}" alt="" style='width:75px;height:100px;'>
+                                    </div>
+                                </div>
+                                <div class="post-info" style='padding-top:20px;text-align:left;'>
+                                    <h5 class='shorter'> {{ candidato.candidatoNombre }}</h5>
+                                    <div class="post-meta">Jan 10, 2013<br>dsa</div>
+                                </div>  
+                            </li>
+                            <br>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+        
