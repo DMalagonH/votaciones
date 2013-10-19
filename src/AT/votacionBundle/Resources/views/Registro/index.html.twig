@@ -6,6 +6,8 @@
     }
     .td-label{
         width:190px;
+        vertical-align: top;
+        padding-top: 3px;
     }
 </style>
 {% endblock style %}
@@ -23,7 +25,7 @@
             <table border="0" style="width:100%;">
                 <tr>
                     <td class="td-label">Nombres * </td>
-                    <td>{{ form_widget(form.nombre, {'attr':{'class':'input-large', 'autofocus':''} }) }}</td>
+                    <td>{{ form_widget(form.nombre, {'attr':{'class':'input-large'} }) }}</td>
                 </tr>
                 <tr>
                     <td class="td-label">Apellidos *</td>
@@ -51,11 +53,21 @@
                 </tr>
                 <tr>
                     <td class="td-label">Constraseña *</td>
-                    <td>{{ form_widget(form.pass, {'attr':{'class':'input-large'} }) }}</td>
+                    <td>
+                        {{ form_widget(form.pass, {'attr':{'class':'password1 input-large'} }) }}
+                        <div class="progress" style="height: 5px; margin-bottom: 10px; margin-left: 15px;">
+                            <div id="progress-bar-pass" class="bar bar-danger" style="width: 0.8%;"></div>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td class="td-label">Confirme su constraseña *</td>
-                    <td>{{ form_widget(form.pass_conf, {'attr':{'class':'input-large'} }) }}</td>
+                    <td>
+                        {{ form_widget(form.pass_conf, {'attr':{'class':'password2 input-large'} }) }}
+                        <div class="progress" style="height:5px; margin-bottom: 10px; margin-left: 15px;">
+                           <div id="span_conf" class="bar bar-danger" style="width: 100%"> </div>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: right;">
@@ -68,3 +80,10 @@
     <div class="span3">	</div>	
 </div>
 {% endblock content %}
+{% block script %}
+<script src="{{ asset('js/password.js')}}"></script>
+<script>
+
+</script>
+
+{% endblock script %}

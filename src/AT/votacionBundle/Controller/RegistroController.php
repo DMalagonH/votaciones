@@ -25,7 +25,6 @@ class RegistroController extends Controller
         
         $form = $this->createRegistroForm();
         
-        $form_valido = false;
         if($request->getMethod() == 'POST')
         {
             $form->bind($request);
@@ -60,11 +59,22 @@ class RegistroController extends Controller
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($usuario);     
                         $em->flush();
-
-//                        $security->debug($data);
+                        
+                        return $this->redirect($this->generateUrl('inactivo'));
+                    }
+                    else
+                    {
+                        $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "", "text" => "Ya existe un usuario con esta información"));
                     }
                 }
-                  
+                else
+                {
+                    $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
+                }                  
+            }
+            else
+            {
+                $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
             }
         }
         
@@ -73,6 +83,12 @@ class RegistroController extends Controller
         );
     }
     
+    /**
+     * Funcion para crear el formulario de registro
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @return Object Formulario
+     */
     private function createRegistroForm()
     {
         $formData = array(
@@ -102,6 +118,12 @@ class RegistroController extends Controller
         return $form;
     }
     
+    /**
+     * Funcion para validar los datos del formulario
+     * 
+     * @param Array $data array con los campos del formulario
+     * @return boolean
+     */
     private function validateForm($data)
     {
         $validate = $this->get('validate');
@@ -139,6 +161,14 @@ class RegistroController extends Controller
         return true;    
 }
 
+    /**
+     * Funcion que verifica si existe un usuario con el email o documento
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param string $email
+     * @param integer $documento
+     * @return boolean retorna true si ya exite el usuario, false si no
+     */
     private function existeUsuario($email, $documento)
     {
         $em = $this->getDoctrine()->getManager();
@@ -163,5 +193,20 @@ class RegistroController extends Controller
         }
     }
 
+    /**
+     * Accion index para los usuarios inactivos
+     * 
+     * muestra un mensaje que le indica que debe confirmar su registro a travez de email
+     * 
+     * @Route("/inactivo", name="inactivo")
+     * @Template("votacionBundle:Registro:inactivo.html.twig")
+     * @author Diego Malagón <diego@altactic.com>
+     * @return Resonse
+     */
+    public function inactivoAction()
+    {
+        return array();
+    }
+    
 }
 ?>
