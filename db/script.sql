@@ -1,12 +1,11 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 DROP SCHEMA IF EXISTS `votaciones` ;
 CREATE SCHEMA IF NOT EXISTS `votaciones` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
 SHOW WARNINGS;
 USE `votaciones` ;
-
 
 -- -----------------------------------------------------
 -- Table `tbl_candidatos`
@@ -36,17 +35,18 @@ CREATE  TABLE IF NOT EXISTS `tbl_usuarios` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `usuario_email` VARCHAR(60) NOT NULL ,
   `usuario_nombre` VARCHAR(60) NOT NULL ,
+  `usuario_apellido` VARCHAR(60) NOT NULL ,
+  `usuario_tipo_documento` VARCHAR(60) NULL ,
   `usuario_documento` VARCHAR(45) NOT NULL ,
   `usuario_rol` VARCHAR(45) NOT NULL ,
-  `usuario_password` VARCHAR(45) NULL ,
-  `usuario_hash` VARCHAR(100) NULL ,
-  `usuario_apellido` VARCHAR(60) NULL ,
-  `usuario_fecha_nacimiento` DATE NULL ,
   `usuario_profesion` VARCHAR(60) NULL ,
   `usuario_telefono` VARCHAR(45) NULL ,
   `usuario_celular` VARCHAR(45) NULL ,
-  `usuario_activado` TINYINT(1) NULL ,
-  `permiso_nuevos_usuarios` TINYINT(1) NULL ,
+  `usuario_activado` TINYINT(1)  NULL ,
+  `permiso_nuevos_usuarios` TINYINT(1)  NULL ,
+  `usuario_fecha_nacimiento` DATE NULL ,
+  `usuario_password` VARCHAR(45) NULL ,
+  `usuario_hash` VARCHAR(100) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 COMMENT = 'Tabla de usuarios de la aplicacion';
@@ -63,9 +63,9 @@ CREATE  TABLE IF NOT EXISTS `tbl_votaciones` (
   `id` VARCHAR(45) NOT NULL ,
   `usuario_id` INT NOT NULL ,
   `candidato_id` INT NOT NULL ,
-  `voto_validado` TINYINT(1) NOT NULL ,
+  `voto_validado` TINYINT(1)  NOT NULL ,
   `voto_fecha` DATETIME NOT NULL ,
-  `usuario_id_validador` TINYINT(1) NULL ,
+  `usuario_id_validador` TINYINT(1)  NULL ,
   INDEX `fk_tbl_usuarios_has_tbl_candidatos_tbl_candidatos1_idx` (`candidato_id` ASC) ,
   INDEX `fk_tbl_usuarios_has_tbl_candidatos_tbl_usuarios_idx` (`usuario_id` ASC) ,
   PRIMARY KEY (`id`) ,
