@@ -16,6 +16,7 @@ class LoginController extends Controller
      * Accion para login de la aplicacion
      * 
      * @Route("/login", name="login")
+     * @Template("votacionBundle:Login:login.html.twig")
      * @author Diego Malagón <diego@altactic.com>
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return Resonse
@@ -27,7 +28,7 @@ class LoginController extends Controller
         
 //        echo $security->encriptar('1234');
         
-        return new Response();
+        return array();
     }
 }
 ?>

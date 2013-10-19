@@ -1,0 +1,34 @@
+<html>
+    <head></head>
+    <body>
+    
+    
+        <form action="{{ path('registro') }}" method='POST' {{ form_enctype(form) }}>
+           
+            {{ form_widget(form._token) }}
+            {{ form_errors(form) }}
+            (*) Campos obligatorios</br>
+            *Nombres: 
+            {{ form_widget(form.nombre, {'attr':{'class':'', 'autofocus':''} }) }}  <br/>
+            *Apellidos
+            {{ form_widget(form.apellido, {'attr':{'class':''} }) }}  <br/>
+            *Correo electrónico
+            {{ form_widget(form.email, {'attr':{'class':''} }) }}  <br/>
+            *Cédula
+            {{ form_widget(form.doc, {'attr':{'class':''} }) }}  <br/>
+            Móvil:
+            {{ form_widget(form.celular, {'attr':{'class':''} }) }}  <br/>
+            Teléfono:
+            {{ form_widget(form.telefono, {'attr':{'class':''} }) }}  <br/>
+            Profesión:
+            {{ form_widget(form.profesion, {'attr':{'class':''} }) }}  <br/>
+            *Constraseña:
+            {{ form_widget(form.pass, {'attr':{'class':''} }) }}  <br/>
+            *Confirme su constraseña:
+            {{ form_widget(form.pass_conf, {'attr':{'class':''} }) }}  <br/>
+            
+            <input type="submit" />
+        </form>
+    
+    </body>
+</html>
