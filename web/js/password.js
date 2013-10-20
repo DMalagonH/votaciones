@@ -49,7 +49,8 @@ $(function(){
     var pass1 = $('.password1'),
 	pass2 = $('.password2'),
 	progress = $('#progress-bar-pass'),
-    span_conf = $('#span_conf');
+    span_conf = $('#span_conf'),
+    sec_pass = $('#sec-pass');
     
         
     pass1.on('keyup', function(){
@@ -57,10 +58,11 @@ $(function(){
         porc = (nivelPass*100)/maxNivelPass;        
         progress.css('width', porc+'%');
         
-        if(porc < 34) color = 'bar-danger';
-        else if(porc >= 34 && porc < 66) color = 'bar-danger';
-        else if(porc >= 66 && porc < 90) color = 'bar-warning';
-        else if(porc >= 90) color = 'bar-success';
+        var seg = 'Insuficiente';
+        if(porc < 34){ color = 'bar-danger'; seg = 'Insuficiente';}
+        else if(porc >= 34 && porc < 66){ color = 'bar-danger'; seg = 'Insuficiente';}
+        else if(porc >= 66 && porc < 90){ color = 'bar-warning'; seg = 'Media';}
+        else if(porc >= 90){ color = 'bar-success'; seg = 'Buena';}
         
         progress.removeClass('bar-danger');
         progress.removeClass('bar-warning');
@@ -68,6 +70,7 @@ $(function(){
         progress.removeClass('bar-success');
         
         progress.addClass(color);
+        sec_pass.html(seg);
         
         if((pass1.val() != '') && (pass1.val() == pass2.val()))
         {

@@ -20,8 +20,9 @@
 <div class="row">
     <div class="span3">	</div>				  
     <div class="span6">					  
-        <h2 class="short"><strong>Regístrese para votar</strong></h2>
-    
+        <h2 class="short" style="margin-bottom: 0px;"><strong>Regístrese para votar</strong></h2>
+        Si ya se registro <a href="{{ path('login') }}" >inicie sesión</a> para registrar su voto
+        <br/><br/>
         <form action="{{ path('registro') }}" method='POST' {{ form_enctype(form) }} id="contactForm" type="post">
 
             {{ form_widget(form._token) }}
@@ -57,12 +58,20 @@
                     <td>{{ form_widget(form.profesion, {'attr':{'class':'input-large'} }) }}</td>
                 </tr>
                 <tr>
-                    <td class="td-label">Constraseña *</td>
+                    <td class="td-label">
+                        Constraseña *
+                        <ul style="font-size: 10px;">
+                            <li style="line-height: 15px;" >Use mayúsculas y minúsculas</li>
+                            <li style="line-height: 15px;" >Use dígitos</li>
+                            <li style="line-height: 15px;" >Use caracteres especiales</li>
+                        </ul>
+                    </td>
                     <td>
                         {{ form_widget(form.pass, {'attr':{'class':'password1 input-large'} }) }}
-                        <div class="progress" style="height: 5px; margin-bottom: 10px; margin-left: 15px;">
+                        <div class="progress" style="height: 5px; margin-bottom: -2px; margin-left: 15px;">
                             <div id="progress-bar-pass" class="bar bar-danger" style="width: 0.8%;"></div>
                         </div>
+                        <div style="font-size: 10px; margin-left: 15px;">Seguridad: <span id="sec-pass">Insuficiente</span></div>    
                     </td>
                 </tr>
                 <tr>
