@@ -188,6 +188,7 @@ class SecurityService
         else
         {
             var_dump($var);
+            echo "<br/>";
         }
     }
     
@@ -289,14 +290,20 @@ class SecurityService
             {
                 $permisos = array(
                     'resultado_votaciones',
-                    'votacion'
+                    // Rutas de votacion
+                    'votacion',
+                    'confirmar_voto',
+                    'registrar_voto'
                 );
             }
             elseif('admin')
             {
                 $permisos = array(
                     'resultado_votaciones',
+                    // Rutas de votacion
                     'votacion',
+                    'confirmar_voto',
+                    'registrar_voto'
                     //ruta para validacion de votos
                     //rutas para crud de usuarios
                 );
