@@ -1,5 +1,17 @@
 {% extends "::base.html.twig" %}
 
+{% block menu %}
+    {% if sess_user.usuarioRol is defined %}
+        {% if sess_user.usuarioRol == 'user' %}
+            {% include '::menu_votacion.html.twig' %}
+        {% elseif sess_user.usuarioRol == 'user' %}
+            {% include '::menu_admin.html.twig' %}
+        {% endif %}
+    {% else %}    
+        {% include '::menu_registro.html.twig' %}
+    {% endif %}
+{% endblock menu %}
+
 {% block body %}
     <div class="row">
         <ul class="simple-post-list">

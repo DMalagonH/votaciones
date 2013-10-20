@@ -1,5 +1,9 @@
 {% extends "::base.html.twig" %}
 
+{% block menu %}
+    {% include '::menu_registro.html.twig' %}
+{% endblock menu %}
+
 {% block body %}
 <h2>Se ha enviado un correo electrónico de confirmación</h2>
 <div class="row">

@@ -55,6 +55,31 @@ class SecurityService
     }
     
     /**
+     * Funcion que crea un token
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param string $email email de usuario
+     * @param string $hash hash de usuario
+     * @param string $pre prefijo para el hash dinamico
+     * @return string token para la uri
+     */
+    public function addToken($email, $hash, $pre = '')
+    {
+        $link_hash = uniqid($pre, true);        
+        $enc_token = $this->encriptar($email.'/'.$hash.'/'.$link_hash);
+        $strtoken = base64_encode($email.'/'.$hash.'/'.$link_hash);
+        
+        $token = new \AT\votacionBundle\Entity\Token();
+        $token->setEmail($email);
+        $token->setHash($hash);
+        $token->setToken($enc_token);
+        $this->em->persist($token);     
+        $this->em->flush();
+        
+        return $strtoken;
+    }
+    
+    /**
      * Funcion para validar un token
      * 
      * Verifica que el token sea valido y lo elimina
@@ -98,19 +123,30 @@ class SecurityService
                         //Eliminar token
                         if($delete)
                         {
-                            $dql = "DELETE FROM votacionBundle:Token t
-                                    WHERE t.email = :email AND t.hash = :hash AND t.token = :token";
-                            $query = $this->em->createQuery($dql);
-                            $query->setParameter('email', $email);
-                            $query->setParameter('hash', $hash);
-                            $query->setParameter('token', $enc_token);
-                            $query->getResult();
+                            $this->deleteToken($email, $hash);
                         }
                     }
                 }
             }
         }
         return $valid;
+    }
+    
+    /**
+     * Funcion para eliminar un token
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param string $email email de usuario
+     * @param string $hash hash de usuario
+     */
+    public function deleteToken($email, $hash)
+    {
+        $dql = "DELETE FROM votacionBundle:Token t
+                WHERE t.email = :email AND t.hash = :hash";
+        $query = $this->em->createQuery($dql);
+        $query->setParameter('email', $email);
+        $query->setParameter('hash', $hash);
+        $query->getResult();
     }
     
     /**
@@ -134,8 +170,7 @@ class SecurityService
         }
         return $validate;
     }
-    
-    
+        
     /**
      * Funcion para imprimir la estructura de una variable
      * 
@@ -156,5 +191,124 @@ class SecurityService
         }
     }
     
+    /**
+     * Funcion para iniciar session
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param string $user email de usuario
+     * @param string $pass contraseña del usuario
+     */
+    public function login($user, $pass)
+    {
+        $dql = "SELECT 
+                    u.id, 
+                    u.usuarioEmail, 
+                    u.usuarioNombre, 
+                    u.usuarioApellido, 
+                    u.usuarioTipoDocumento,
+                    u.usuarioDocumento,
+                    u.usuarioRol,
+                    u.permisoNuevosUsuarios,
+                    u.usuarioHash
+               FROM votacionBundle:TblUsuarios u
+               WHERE
+                    u.usuarioEmail = :email
+                    AND u.usuarioPassword = :pass
+                    AND u.usuarioActivado = :activado";
+        $query = $this->em->createQuery($dql);
+        $query->setParameter('email', $user);
+        $query->setParameter('pass', $this->encriptar($pass));
+        $query->setParameter('activado', true);
+        $query->setMaxResults(1);
+        $result = $query->getResult();
+        
+        if(count($result) == 1)
+        {
+            $usuario = $result[0];
+            
+            $this->session->set('sess_user',$usuario);
+            
+            return $usuario;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    /**
+     * Funcion para eliminar la session
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     */
+    public function logout()
+    {
+        $sess_user = $this->session->get('sess_user');
+        
+        $this->deleteToken($sess_user['usuarioEmail'], $sess_user['usuarioHash']);
+        
+        $this->session->set('sess_user',null);
+    }
+    
+    /**
+     * Funcion que verifica si el usuario esta autenticado
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @return boolean
+     */
+    public function autentication()
+    {
+        $return = false;
+        $sess_usuario = $this->session->get('sess_user');
+        
+        if(isset($sess_usuario['usuarioEmail']) && isset($sess_usuario['usuarioHash']) && isset($sess_usuario['usuarioRol']))
+        {
+            $return = true;
+        }
+        
+        return  $return;
+    }
+    
+    /**
+     * Funcion para verificar si el usuario tiene permiso a una seccion de la aplicacion
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param string $route nombre de la ruta en symfony
+     * @return boolean
+     */
+    public function autorization($route)
+    {
+        $return = false;
+        $sess_usuario = $this->session->get('sess_user');
+        
+        if(isset($sess_usuario['usuarioRol']))
+        {
+            $rol = $sess_usuario['usuarioRol'];
+            
+            if($rol == 'user')
+            {
+                $permisos = array(
+                    'resultado_votaciones',
+                    'votacion'
+                );
+            }
+            elseif('admin')
+            {
+                $permisos = array(
+                    'resultado_votaciones',
+                    'votacion',
+                    //ruta para validacion de votos
+                    //rutas para crud de usuarios
+                );
+            }
+            
+            if(in_array($route, $permisos))
+            {
+                $return = true;
+            }
+        }
+        
+        return $return;
+    }
 }
 ?>

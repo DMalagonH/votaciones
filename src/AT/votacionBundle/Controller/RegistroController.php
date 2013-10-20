@@ -4,7 +4,6 @@ namespace AT\votacionBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -22,6 +21,8 @@ class RegistroController extends Controller
     public function indexAction(Request $request)
     {
         $security = $this->get('security');
+        if($security->autentication()){ return $this->redirect($this->generateUrl('votacion'));}
+        
         
         $form = $this->createRegistroForm();
         
@@ -211,18 +212,7 @@ class RegistroController extends Controller
         $security = $this->get('security');
         
         //Crear token
-        $link_hash = uniqid('l', true);        
-        $enc_token = $security->encriptar($email.'/'.$hash.'/'.$link_hash);
-        $strtoken = base64_encode($email.'/'.$hash.'/'.$link_hash);
-                
-        $token = new \AT\votacionBundle\Entity\Token();
-        $token->setEmail($email);
-        $token->setHash($hash);
-        $token->setToken($enc_token);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($token);     
-        $em->flush();
-        
+        $strtoken = $security->addToken($email, $hash, 'l');
         
         // Enviar correo con link
         $link = $this->getRequest()->getSchemeAndHttpHost().$this->generateUrl('activar', array('token' => $strtoken));
@@ -259,7 +249,7 @@ class RegistroController extends Controller
     {
         $security = $this->get('security');
         
-        $valid = $security->validateToken($token, false);
+        $valid = $security->validateToken($token);
         
         if($valid)
         {
