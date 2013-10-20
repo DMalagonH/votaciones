@@ -1,0 +1,87 @@
+{% extends "::base.html.twig" %}
+
+{% block style %}
+    <style type="text/css" title="currentStyle">
+        @import "{{ asset('datatables/media/css/demo_page.css') }}";
+        @import "{{ asset('datatables/media/css/demo_table.css') }}";
+        @import "{{ asset('datatables/media/css/jquery.dataTables_themeroller.css') }}";
+    </style>
+{% endblock style %}
+        
+{% block body %}
+
+    {% set classExi = ' badge-inverse linklt' %}
+    {% set classIna = '' %}
+    {% set classAct = ' badge-success linklt' %}
+    <form action="{{ path('validar_votos') }}" method='POST' type="post" id='formPaginacion'>
+        <input id='letter' name='letter' type='text' value='{{ LetterAct }}'>
+        <div class='row' style='text-align:center;'>
+            {% for letter in 'A'..'Z' %}
+                {% if LetterAct == letter %}
+                    {% set class = classAct %}
+                {% else %}
+                    {% set class = (letter in pagLetras|keys) ? classExi : classIna %}
+                {% endif %}
+                <span class="badge {{ class }}" data-id="{{ letter}}">{{ letter }} 
+                    {% if letter in pagLetras|keys %}<span style='font-size:10px;'>{{ pagLetras[letter]}}</span>{% endif %}
+                </span>
+            {% endfor %}
+
+            {% set class = (LetterAct == 'all') ? classAct : classIna %}
+            <span class="badge {{ class }} linklt" data-id="all">All</span>
+        </div>
+   </form>
+   <hr>
+    
+    <div>
+        <table id="dt_votos">
+            <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Documento</th>
+                <th>Tel&eacute;fono</th>
+                <th>Celular</th>
+                <th>Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for vt in listado %}
+                    <tr>
+                        <td>{{ vt.usuarioApellido }}</td>
+                        <td>{{ vt.usuarioNombre }}</td>
+                        <td>{{ vt.usuarioEmail }}</td>
+                        <td>{{ vt.usuarioDocumento }}</td>
+                        <td>{{ vt.usuarioTelefono }}</td>
+                        <td>{{ vt.usuarioCelular }}</td>
+                        <td>{{ vt.votoId}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock body %}
+
+{% block script %}
+    <script type="text/javascript" language="javascript" src="{{ asset('datatables/media/js/jquery.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ asset('datatables/media/js/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" charset="utf-8">
+        
+        $('.linklt').click(function(){
+            var letter = $(this).data('id');
+            $('#letter').attr('value', letter);
+            alert(letter);
+
+            $('#formPaginacion').submit();
+        });
+    
+        $(document).ready(function() {
+            $('#dt_votos').dataTable({
+                //"bJQueryUI": true,
+                //"sPaginationType": "full_numbers"
+            });
+        } );
+    </script>
+{% endblock script %}    
