@@ -18,6 +18,7 @@ class ResultadosVotacionesController extends Controller
      * @Route("/resultados", name="resultado_votaciones")
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return Render
+     * @Method("GET")
      */
     public function indexAction()
     {

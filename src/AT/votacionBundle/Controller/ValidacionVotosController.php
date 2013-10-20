@@ -17,69 +17,17 @@ class ValidacionVotosController extends Controller
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return Render
      * @Template("votacionBundle:ValidacionVotos:index.html.twig")
-     * @Route("/validaciones", name="validar_votos")
+     * @Route("/validaciones", name="validar_votos_index")
+     * @Method({"GET", "POST"})
      */
     public function indexAction(Request $request)
     {
         $security = $this->get('security');
+        $pagLetras = $this->getPaginacionAbecedario(0);
         
-        $pagLetras = $this->getPaginacionAbecedario();
-        
-        if($request->getMethod() == 'POST')
+        if($request->getMethod() == 'POST') 
         {
             $lselected = $request->request->get('letter');
-            /**
-            $form->bind($request);
-            if ($form->isValid())
-            {
-                $data = $form->getData();
-
-
-                if($this->validateForm($data))
-                {
-                    if(!$this->existeUsuario($data['email'], $data['doc']))
-                    {
-                        $enc_pass = $security->encriptar($data['pass']);
-
-                        $usuario = new \AT\votacionBundle\Entity\TblUsuarios();
-
-                        $usuario->setUsuarioActivado(false);
-                        $usuario->setUsuarioRol('user');
-                        $usuario->setPermisoNuevosUsuarios(false);
-
-                        $usuario->setUsuarioNombre($data['nombre']);
-                        $usuario->setUsuarioApellido($data['apellido']);
-                        $usuario->setUsuarioEmail($data['email']);
-                        $usuario->setUsuarioDocumento($data['doc']);
-                        $usuario->setUsuarioProfesion($data['profesion']);
-                        $usuario->setUsuarioTelefono($data['telefono']);
-                        $usuario->setUsuarioCelular($data['celular']);
-
-                        $usuario->setUsuarioPassword($enc_pass);
-                        $usuario->setUsuarioHash(uniqid('user', true));
-
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($usuario);     
-                        $em->flush();
-                        
-                        return $this->redirect($this->generateUrl('inactivo'));
-                    }
-                    else
-                    {
-                        $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "", "text" => "Ya existe un usuario con esta información"));
-                    }
-                }
-                else
-                {
-                    $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
-                }                  
-            }
-            else
-            {
-                $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
-            }
-        
-        */
         }
         else {
             if ($pagLetras){
@@ -93,15 +41,90 @@ class ValidacionVotosController extends Controller
             }
         }
         
-        $listadoNoValidado = $this->getListadoVotacionSinValidad($lselected);
+        $listadoNoValidado = $this->getListadoVotacion($lselected, 0);
         
         return array(
-            //'form' => $form->createView(),
             'listado' => $listadoNoValidado,
             'pagLetras' => $pagLetras,
-            'LetterAct' => $lselected
-            
+            'LetterAct' => $lselected,
+            'orign' => 'novalidados'
         );
+    }
+    
+    /**
+     * @author Camilo Quijano <camilo@altactic.com>
+     * @version 1
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return Render
+     * @Template("votacionBundle:ValidacionVotos:index.html.twig")
+     * @Route("/validados", name="validados_votos_cancelar")
+     * @Method({"GET", "POST"})
+     */
+    public function validadosAction(Request $request)
+    {
+        $security = $this->get('security');
+        $pagLetras = $this->getPaginacionAbecedario(1);
+        
+        if($request->getMethod() == 'POST') 
+        {
+            $lselected = $request->request->get('letter');
+        }
+        else {
+            if ($pagLetras){
+                foreach($pagLetras as $key=>$pl) {
+                    $lselected = $key;
+                    break;
+                }
+            }
+            else {
+                $lselected = 'all';
+            }
+        }
+        $listadoNoValidado = $this->getListadoVotacion($lselected, 1);
+        
+        return array(
+            'listado' => $listadoNoValidado,
+            'pagLetras' => $pagLetras,
+            'LetterAct' => $lselected,
+            'orign' => 'validados'
+        );
+    }
+    
+    /**
+     * Funcion POST que cambia el estado del voto
+     * 
+     * @author Camilo Quijano <camilo@altactic.com>
+     * @version 1
+     * @param \Symfony\Component\HttpFoundation\Request $request (act=>(val, NoVal), id=> Id del voto)
+     * @return Response 1=>Exitoso 0=>Error
+     * @Route("/validar", name="validar_votos")
+     * @Method("POST")
+     */
+    public function validarVoto(Request $request)
+    {
+        if($request->isXmlHttpRequest() && $request->getMethod() == 'POST'){
+            
+            $em = $this->getDoctrine()->getManager();
+            $votoId = $request->request->get('id');
+            $action = $request->request->get('act');
+            
+            $NoError = 0;
+            new Response();
+            if ($action == 'Val' || $action == 'NoVal') {
+
+                $AuxVV = ($action == 'Val') ? 1 : 0;
+                $voto = $em->getRepository("votacionBundle:TblVotaciones")->findOneById($votoId);
+                if ($voto) {
+                    $voto->setVotoValidado($AuxVV);
+                    $em->persist($voto);
+                    $em->flush();
+                    $NoError = 1;
+                }
+            }
+            
+            echo $NoError;
+            exit();
+        }
     }
     
     /**
@@ -110,9 +133,11 @@ class ValidacionVotosController extends Controller
      * 
      * @author Camilo Quijano <camilo@altactic.com>
      * @version 1
+     * @param Int $validado Votos que deseo que me filtr (0=>no validados, 1=>Validados)
+     * @param String $letra Letra por la que deseo filtrar los apllidos, si viene all no aplica filtro
      * @return Array Con listado de registros que coinciden con la busqueda
      */
-    private function getListadoVotacionSinValidad($letra)
+    private function getListadoVotacion($letra, $validados)
     {
         $em = $this->getDoctrine()->getManager();
         $where ='';
@@ -130,8 +155,7 @@ class ValidacionVotosController extends Controller
                 FROM votacionBundle:TblVotaciones tv
                 INNER JOIN votacionBundle:TblUsuarios tu 
                     WITH tu.id = tv.usuario
-                WHERE tv.votoValidado = 0 ".$where."
-                ";
+                WHERE tv.votoValidado = ".$validados." ".$where."";
         $query = $em->createQuery($dql);
         return $query->getResult();
     }
@@ -142,9 +166,10 @@ class ValidacionVotosController extends Controller
      * 
      * @author Camilo Quijano <camilo@altactic.com>
      * @version 1
+     * @param Int $validado Votos que deseo que me filtr (0=>no validados, 1=>Validados)
      * @return Array Con letras que tienen registros
      */
-    private function getPaginacionAbecedario()
+    private function getPaginacionAbecedario($validados)
     {
         $em = $this->getDoctrine()->getManager();
         /**
@@ -158,7 +183,7 @@ class ValidacionVotosController extends Controller
         $dql = "SELECT SUBSTRING(tu.usuarioApellido, 1, 1) AS letra, COUNT(tu.id) totalPersonas
                 FROM votacionBundle:TblVotaciones tv
                 INNER JOIN votacionBundle:TblUsuarios tu 
-                    WITH tu.id = tv.usuario AND tv.votoValidado = 0
+                    WITH tu.id = tv.usuario AND tv.votoValidado = ".$validados."
                 GROUP BY letra";
         $query = $em->createQuery($dql);
         $entities=$query->getResult();

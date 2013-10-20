@@ -7,15 +7,22 @@
         @import "{{ asset('datatables/media/css/jquery.dataTables_themeroller.css') }}";
     </style>
 {% endblock style %}
-        
+
+{% block menu %}
+    {% include '::menu_admin.html.twig' %}
+{% endblock menu %}
+
 {% block body %}
 
     {% set classExi = ' badge-inverse linklt' %}
     {% set classIna = '' %}
     {% set classAct = ' badge-success linklt' %}
-    <form action="{{ path('validar_votos') }}" method='POST' type="post" id='formPaginacion'>
-        <input id='letter' name='letter' type='text' value='{{ LetterAct }}'>
+    
+    {% set Varpath = (orign == 'novalidados') ? 'validar_votos_index' : 'validados_votos_cancelar' %}
+    <form action="{{ path(Varpath) }}" method='POST' type="post" id='formPaginacion'>
+        <input id='letter' name='letter' type='hidden' value='{{ LetterAct }}'>
         <div class='row' style='text-align:center;'>
+            {% set totalV = 0 %}
             {% for letter in 'A'..'Z' %}
                 {% if LetterAct == letter %}
                     {% set class = classAct %}
@@ -23,15 +30,25 @@
                     {% set class = (letter in pagLetras|keys) ? classExi : classIna %}
                 {% endif %}
                 <span class="badge {{ class }}" data-id="{{ letter}}">{{ letter }} 
-                    {% if letter in pagLetras|keys %}<span style='font-size:10px;'>{{ pagLetras[letter]}}</span>{% endif %}
+                    {% if letter in pagLetras|keys %}
+                        {% set totalV = totalV + pagLetras[letter] %}
+                        <span style='font-size:10px;'>{{ pagLetras[letter]}}</span>
+                    {% endif %}
                 </span>
             {% endfor %}
 
             {% set class = (LetterAct == 'all') ? classAct : classIna %}
-            <span class="badge {{ class }} linklt" data-id="all">All</span>
+            <span class="badge {{ class }} linklt" data-id="all">
+                All <span style='font-size:10px;'>{{ totalV }}</span>
+            </span>
         </div>
    </form>
-   <hr>
+    <hr>
+
+    {# ESPACIO PARA MENSAJES #}
+    <div style='height:50px;'>
+        <div id='divmsj' style='position:relative;'></div>
+    </div>
     
     <div>
         <table id="dt_votos">
@@ -48,14 +65,20 @@
             </thead>
             <tbody>
                 {% for vt in listado %}
-                    <tr>
+                    <tr id='voto_{{ vt.votoId}}'>
                         <td>{{ vt.usuarioApellido }}</td>
                         <td>{{ vt.usuarioNombre }}</td>
                         <td>{{ vt.usuarioEmail }}</td>
                         <td>{{ vt.usuarioDocumento }}</td>
                         <td>{{ vt.usuarioTelefono }}</td>
                         <td>{{ vt.usuarioCelular }}</td>
-                        <td>{{ vt.votoId}}</td>
+                        <td style='text-align:center'>
+                            {% if orign == 'novalidados' %}
+                                <button class="btn btn-mini btn-primary validarVoto" data-id="{{ vt.votoId}}" data-action="Val" type="button">Validar</button>
+                            {% else %}
+                                <button class="btn btn-mini btn-danger validarVoto" data-id="{{ vt.votoId}}" data-action="NoVal" type="button">Desvalidar</button>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -68,20 +91,40 @@
     <script type="text/javascript" language="javascript" src="{{ asset('datatables/media/js/jquery.js') }}"></script>
     <script type="text/javascript" language="javascript" src="{{ asset('datatables/media/js/jquery.dataTables.js') }}"></script>
     <script type="text/javascript" charset="utf-8">
-        
         $('.linklt').click(function(){
             var letter = $(this).data('id');
             $('#letter').attr('value', letter);
-            alert(letter);
-
             $('#formPaginacion').submit();
+            //alert(letter);
         });
-    
+        
+        var oTable = ''
         $(document).ready(function() {
-            $('#dt_votos').dataTable({
+            oTable = $('#dt_votos').dataTable({
                 //"bJQueryUI": true,
                 //"sPaginationType": "full_numbers"
             });
-        } );
+        });
+        
+        $('.validarVoto').click(function(){
+            var vt = $(this).data('id');
+            var action = $(this).data('action'); // Validar o No Validar
+            var row = $(this).closest('tr').attr('id');
+            var nRow =  $('#dt_votos tbody tr[id='+row+']')[0];
+            
+            $.post('{{ path('validar_votos')}}', { id: vt, act: action},
+                function(data){
+                    if (data == 1) {
+                        $('#divmsj').html('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Voto validado </strong>Voto validado correctamente</div>');
+                        //$('#voto_'+vt).hide('slow'); -- Esconde el registro
+                        oTable.fnDeleteRow( nRow, null, true );
+                    }
+                    else {
+                        $('#divmsj').html('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Ocurrio un error </strong>Ocurrio un error al validar el voto</div>');
+                    }
+                    setTimeout(function(){  $('#divmsj').html('');  }, 3000);
+                }
+            );
+        });
     </script>
-{% endblock script %}    
+{% endblock script %}

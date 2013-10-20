@@ -1,0 +1,10 @@
+<li class="{% if route == 'votacion' %}active{% endif %}">
+    <a href="{{ path('votacion') }}">Votar</a>
+</li>
+<li class="{% if route == 'resultado_votaciones' %}active{% endif %}">
+    <a href="{{ path('resultado_votaciones') }}">Resultados</a>
+</li>
+<li >
+    <a href="{{ path('logout') }}">Salir</a>
+</li>
+

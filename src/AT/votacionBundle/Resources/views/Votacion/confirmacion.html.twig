@@ -1,0 +1,24 @@
+<form action="{{ path('registrar_voto') }}" method='POST' id="contactForm" type="post">
+    <table border="0" style="width:100%;">
+        <tr>
+            <td>
+                <div class="thumbnail" style="width:75px;">
+                    <img src="{{ asset(candidato.candidatoImagen) }}" alt="" style="width:75px;height:100px;">
+                </div>
+            </td>
+            <td>
+                ¿Desea confirmar su voto por #{{ candidato.candidatoNoTarjeton }} {{candidato.candidatoNombre}}?
+            </td>
+            <td>
+                {{ form_errors(form) }}
+                {{ form_widget(form._token) }}
+                {{ form_widget(form.cid) }}
+                {{ form_widget(form.cno) }}
+                {{ form_widget(form.enc) }}
+                <div style="width: 100%; text-align: right;">
+                    <input type="submit" value="Votar" class="btn btn-primary"/>
+                </div>
+            </td>
+        </tr>
+    </table>
+</form>

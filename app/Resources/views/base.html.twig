@@ -1,4 +1,6 @@
+{% set sess_user = app.session.get('sess_user') %}
 <!DOCTYPE html>
+
 <!--[if IE 8]>			<html class="ie ie8"> <![endif]-->
 <!--[if IE 9]>			<html class="ie ie9"> <![endif]-->
 <!--[if gt IE 9]><!-->	<html> <!--<![endif]-->
@@ -113,16 +115,10 @@
 						</ul>
 					</div>
 					<nav>
-						<ul class="nav nav-pills nav-main" id="mainMenu">							
-							<li>
-								<a href="{{ path('registro') }}">Registrarse</a>
-							</li>
-							<li>
-								<a href="{{ path('login') }}">Login</a>
-							</li>
-                            <li>
-								<a href="{{ path('resultado_votaciones') }}">Resultados</a>
-							</li>
+						<ul class="nav nav-pills nav-main" id="mainMenu">
+                            {% set route = app.request.attributes.get('_route') %}
+							{% block menu %}{% endblock menu %}
+                                
 						</ul>
 					</nav>
 				</div>
@@ -150,7 +146,7 @@
 								</a>
 							</div>
 							<div class="span7">
-                                <p>© Copyright 2013 por <a href="http://www.altactic.com" target="_blank">Altactic</a>. Todos los derechos reservados.</p>
+                                <p>Â© Copyright 2013 por <a href="http://www.altactic.com" target="_blank">Altactic</a>. Todos los derechos reservados.</p>
 							</div>
 						</div>
 					</div>

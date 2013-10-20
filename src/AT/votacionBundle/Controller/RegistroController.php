@@ -4,7 +4,6 @@ namespace AT\votacionBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -22,6 +21,8 @@ class RegistroController extends Controller
     public function indexAction(Request $request)
     {
         $security = $this->get('security');
+        if($security->autentication()){ return $this->redirect($this->generateUrl('votacion'));}
+        
         
         $form = $this->createRegistroForm();
         
@@ -38,6 +39,7 @@ class RegistroController extends Controller
                     if(!$this->existeUsuario($data['email'], $data['doc']))
                     {
                         $enc_pass = $security->encriptar($data['pass']);
+                        $hash = uniqid('u', true);
 
                         $usuario = new \AT\votacionBundle\Entity\TblUsuarios();
 
@@ -49,16 +51,19 @@ class RegistroController extends Controller
                         $usuario->setUsuarioApellido($data['apellido']);
                         $usuario->setUsuarioEmail($data['email']);
                         $usuario->setUsuarioDocumento($data['doc']);
+                        $usuario->setUsuarioTipoDocumento('Cédula de ciudadanía');
                         $usuario->setUsuarioProfesion($data['profesion']);
                         $usuario->setUsuarioTelefono($data['telefono']);
                         $usuario->setUsuarioCelular($data['celular']);
 
                         $usuario->setUsuarioPassword($enc_pass);
-                        $usuario->setUsuarioHash(uniqid('user', true));
+                        $usuario->setUsuarioHash($hash);
 
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($usuario);     
                         $em->flush();
+                        
+                        $this->enviarCorreoConfirmacion($data['email'], $hash);
                         
                         return $this->redirect($this->generateUrl('inactivo'));
                     }
@@ -69,7 +74,7 @@ class RegistroController extends Controller
                 }
                 else
                 {
-                    $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
+                    $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "*Datos inválidos:", "text" => "Verifique la información suministrada"));
                 }                  
             }
             else
@@ -107,9 +112,9 @@ class RegistroController extends Controller
            ->add('nombre', 'text', array('required' => true))
            ->add('apellido', 'text', array('required' => true))
            ->add('email', 'email', array('required' => true))
-           ->add('doc', 'number', array('required' => true))
-           ->add('celular', 'number', array('required' => false))
-           ->add('telefono', 'number', array('required' => false))
+           ->add('doc', 'text', array('required' => true))
+           ->add('celular', 'text', array('required' => false))
+           ->add('telefono', 'text', array('required' => false))
            ->add('profesion', 'text', array('required' => false))
            ->add('pass', 'password', array('required' => true))
            ->add('pass_conf', 'password', array('required' => true))
@@ -121,6 +126,7 @@ class RegistroController extends Controller
     /**
      * Funcion para validar los datos del formulario
      * 
+     * @author Diego Malagón <diego@altactic.com>
      * @param Array $data array con los campos del formulario
      * @return boolean
      */
@@ -136,7 +142,7 @@ class RegistroController extends Controller
         $val['doc'] = $validate->validateInteger($data['doc'], true);
         $val['celular'] = $validate->validateInteger($data['celular'], false);
         $val['telefono'] = $validate->validateInteger($data['telefono'], false);
-        $val['profesion'] = $validate->validateInteger($data['profesion'], false);
+        $val['profesion'] = $validate->validateTextOnly($data['profesion'], false);
         
         // Validar password
         $val['pass'] = false;
@@ -194,6 +200,31 @@ class RegistroController extends Controller
     }
 
     /**
+     * Funcion para enviar correo de confirmacion de registro
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @param string $email email del usario
+     * @param string $hash hash del usuario
+     */
+    private function enviarCorreoConfirmacion($email, $hash)
+    {
+        $mail = $this->get('mail');
+        $security = $this->get('security');
+        
+        //Crear token
+        $strtoken = $security->addToken($email, $hash, 'l');
+        
+        // Enviar correo con link
+        $link = $this->getRequest()->getSchemeAndHttpHost().$this->generateUrl('activar', array('token' => $strtoken));
+        
+        $body = '
+            Confirme su registro para las votaciones haciendo click <a href="'.$link.'">aqui</a>
+        ';        
+        
+        $mail->sendMail($email, 'Confirmación de registro', array('body' => $body));
+    }
+    
+    /**
      * Accion index para los usuarios inactivos
      * 
      * muestra un mensaje que le indica que debe confirmar su registro a travez de email
@@ -208,5 +239,45 @@ class RegistroController extends Controller
         return array();
     }
     
+    /**
+     * Accion para activa un usuario a traves del token en la uri
+     * 
+     * @author Diego Malagón <diego@altactic.com>
+     * @Route("/activar/{token}", name="activar")
+     */
+    public function activarUsuarioAction($token)
+    {
+        $security = $this->get('security');
+        
+        $valid = $security->validateToken($token);
+        
+        if($valid)
+        {
+            //Activar usuario
+            $dec_token = base64_decode($token, true);
+            $explode = explode('/', $dec_token);
+            $email = $explode[0];
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $dql = "UPDATE votacionBundle:TblUsuarios u
+                    SET u.usuarioActivado = :activado
+                    WHERE u.usuarioEmail = :email";
+            $query = $em->createQuery($dql);
+            $query->setParameter('email', $email);
+            $query->setParameter('activado', true);
+            $query->getResult();  
+            
+            $this->get('session')->getFlashBag()->add('alerts', array("type" => "success", "title" => "Usuario validado", "text" => "ahora puede iniciar sesión y votar por su candidato"));
+            return $this->redirect($this->generateUrl('login'));
+        }       
+        else 
+        {
+            $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "El enlace a caducado", "text" => "Por favor intente registrarse nuevamente"));
+            return $this->redirect($this->generateUrl('registro'));
+        }
+        
+        return new Response();
+    }
 }
 ?>

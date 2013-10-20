@@ -1,0 +1,74 @@
+{% extends "::base.html.twig" %}
+
+{% block menu %}
+    {% include '::menu_votacion.html.twig' %}
+{% endblock menu %}
+
+{% block content %}
+    <div class="row">
+        {% if candidatos and votoRegistrado == false %}
+            <h2 style="margin-bottom: 0px;" >Seleccione el candidato por el que desea votar</h2>
+            <p>Para seleccionar el candidato haga click sobre la imagen y luego confirme su voto en la ventana emergente.</p>
+            <hr/>
+            <ul class="portfolio-list sort-destination" data-sort-id="portfolio">
+                {% for candidato in candidatos %}
+                    <li class="span3 isotope-item link-item" style="cursor:pointer;" data-cid="{{ candidato.id }}" data-cno="{{ candidato.candidatoNoTarjeton }}">
+                        <div class="portfolio-item thumbnail">
+                            <a class="thumb-info">
+                                <img alt="" src="{{ asset(candidato.candidatoImagen) }}" style="width: 100%; height: 173px;">
+                                <span class="thumb-info-title">
+                                    <span class="thumb-info-inner">{{ candidato.candidatoNoTarjeton }}</span>
+                                    <span class="thumb-info-type">{{ candidato.candidatoNombre }}</span>
+                                </span>
+                                <span class="thumb-info-action">
+                                    <span href="#" class="thumb-info-action-icon"><i class="icon-ok"></i></span>
+                                </span>
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2>Su voto se ha registrado correctamente</h2>
+            <div class="row">
+                <div class="span10">
+                    <p class="lead">
+                        Los votos entran en un proceso de validación vía telefónica o correo electrónico por parte de nuestro personal, una vez el voto sea validado se verá reflejado en los resultados.
+                        <br/><br/>
+                        Muchas gracias por participar.
+                        <br/><br/>
+                        <a class="btn btn-info" href="{{ path('resultado_votaciones') }}">Ver resultados</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div id="modal-confirm" class="modal hide fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Confirmar voto</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        
+        $(".link-item").click(function(){
+            $("#modal-body").html('<p>Cargando...</p>');
+            $("#modal-confirm").modal('show');
+            $.post('{{ path('confirmar_voto') }}', { cid: $(this).data('cid'), cno: $(this).data('cno') },
+                function(data){
+                    $("#modal-body").html(data);
+            });
+        });
+        
+    });
+</script>
+{% endblock script %}

@@ -57,10 +57,10 @@ $(function(){
         porc = (nivelPass*100)/maxNivelPass;        
         progress.css('width', porc+'%');
         
-        if(porc < 34) color = 'bar-danger';//rojo
-        else if(porc >= 34 && porc < 66) color = 'bar-warning';//amarillo
-        else if(porc >= 66 && porc < 90) color = 'bar-yellow';//verde claro
-        else if(porc >= 90) color = 'bar-success';// verde oscuro
+        if(porc < 34) color = 'bar-danger';
+        else if(porc >= 34 && porc < 66) color = 'bar-danger';
+        else if(porc >= 66 && porc < 90) color = 'bar-warning';
+        else if(porc >= 90) color = 'bar-success';
         
         progress.removeClass('bar-danger');
         progress.removeClass('bar-warning');
