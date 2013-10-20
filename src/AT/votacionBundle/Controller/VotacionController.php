@@ -272,16 +272,21 @@ class VotacionController extends Controller
         
         $email = $sess_user['usuarioEmail'];       
         
+        
+        $link = $this->getRequest()->getSchemeAndHttpHost().$this->generateUrl('resultado_votaciones');
         $body = '
-            <b>Su voto se ha registrado correctamente</b><br/>
             <p>
-            Los votos entran en un proceso de validación vía telefónica o correo electrónico por parte de nuestro personal, una vez el voto sea validado se verá reflejado en los resultados.
+            Los votos entran en un proceso de validación vía telefónica o correo electrónico por parte de nuestro personal, 
+            una vez el voto sea validado se verá reflejado en los <a href="'.$link.'">resultados</a>.
             </p>
-            <br/><br/>
+            <br/>
             Muchas gracias por participar.
         ';        
         
-        $mail->sendMail($email, 'Voto registrado', array('body' => $body));
+        $mail->sendMail($email, 'Voto registrado', array(
+            'title' => 'Su voto se ha registrado correctamente',
+            'body' => $body
+        ));
     }
 }
 ?>

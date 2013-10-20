@@ -221,7 +221,10 @@ class RegistroController extends Controller
             Confirme su registro para las votaciones haciendo click <a href="'.$link.'">aqui</a>
         ';        
         
-        $mail->sendMail($email, 'Confirmación de registro', array('body' => $body));
+        $mail->sendMail($email, 'Confirmación de registro', array(
+            'title' => 'Confirmaci&oacute;n de registro',
+            'body' => $body
+        ));
     }
     
     /**
