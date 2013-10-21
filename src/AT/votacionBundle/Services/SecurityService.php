@@ -333,6 +333,7 @@ class SecurityService
 	 *
 	 * @author Camilo Quijano <camilo@altactic.com>
 	 * @version 1
+	 * @return Array Arreglo con parametros de parameters.yml
 	 */
     public function getParameters()
     {
@@ -344,6 +345,16 @@ class SecurityService
 		return $parameters;
 	}
 
+	
+	/**
+	 * Funcion que retorna el estado de las votaciones y resultados
+	 * si estan entre los periodos configurados
+	 * - Acceso desde VotacionController
+	 * 
+	 * @author Camilo Quijano <camilo@altactic.com>
+	 * @version 1
+	 * @return Array Arreglo con estados de votaciones (1 - visible, 2 - No visible) y resultados (1 - visible, 2 - No visible)
+	 */
 	public function getVotacionesResultadosEstado()
 	{
 		$parameters = $this->getParameters();
@@ -359,19 +370,14 @@ class SecurityService
 		$parameters['resultados_fecha_inicio'] = ($parameters['resultados_fecha_inicio']) ? $parameters['resultados_fecha_inicio'] : $fActualU -10000;
 		$parameters['resultados_fecha_fin'] = ($parameters['resultados_fecha_fin']) ? $parameters['resultados_fecha_fin'] : $fActualU +10000;
 		
-		if (($parameters['votaciones_fecha_inicio'] < $fActualU) && ($parameters['votaciones_fecha_fin'] > $fActualU))
-		{
+		if (($parameters['votaciones_fecha_inicio'] < $fActualU) && ($parameters['votaciones_fecha_fin'] > $fActualU)) {
 			$estado['votacionesActivas'] = 1;
 		}
 		
-		if (($parameters['resultados_fecha_inicio'] < $fActualU) && ($parameters['resultados_fecha_fin'] > $fActualU))
-		{
+		if (($parameters['resultados_fecha_inicio'] < $fActualU) && ($parameters['resultados_fecha_fin'] > $fActualU)) {
 			$estado['resultadosActivos'] = 1;
 		}
-
 		return $estado;
 	}
-
-	
 }
 ?>

@@ -24,16 +24,23 @@ class ResultadosVotacionesController extends Controller
     {
         $security = $this->get('security');
         //$acceso_denegado = true;
-        
-        $totalVotos = 0;
-        $candidatos = $this->getResultadosPublicaciones();
-        foreach ($candidatos as $candidato) {
-            $totalVotos += $candidato['votaciones'];
-        }
+
+        $estado = $security->getVotacionesResultadosEstado();
+
+		$totalVotos = 0;
+		$candidatos = Array();
+        if ($estado['resultadosActivos']) {
+			
+			$candidatos = $this->getResultadosPublicaciones();
+			foreach ($candidatos as $candidato) {
+				$totalVotos += $candidato['votaciones'];
+			}
+		}
         
         return array(
             'candidatos' => $candidatos,
-            'totalVotos' => $totalVotos
+            'totalVotos' => $totalVotos,
+            'estadoResultados' => $estado['resultadosActivos']
         );
     }
     /**

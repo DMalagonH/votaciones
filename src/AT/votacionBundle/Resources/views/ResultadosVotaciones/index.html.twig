@@ -16,35 +16,50 @@
     <div class="row">
         <div class="span1"></div>
         <div class="span10">
-        
-        <ul class="simple-post-list">
-            {% for candidato in candidatos%}
-                <li style='padding-top:0px;border-bottom:0px' class='span12'>
-                    <div class="post-image">
-                        <div class="thumbnail">
-                            {% set img = (candidato.candidatoImagen) ? candidato.candidatoImagen : 'ImgCandidatos/imgDefault.jpg'%}
-                            <img src="{{ asset(img) }}" alt="" style='width:75px;height:100px;'>
-                        </div>
-                    </div>
-                    <div class="post-info" style='padding-top:20px;text-align:left;'>
-                        <h5 class='shorter'> {{ candidato.candidatoNombre }}</h5>
-                        <div class="post-meta">
-                            Votos: {{ candidato.votaciones }}<br>
-                            {% set porcentaje = (totalVotos > 0) ? (candidato.votaciones / totalVotos) * 100 : '0'  %}
-                            <div class="span6">
-                                <div class="progress">
-                                    <div class="bar" style="width: {{ porcentaje ~ '%;' }}"></div>
-                                </div>
-                            </div>
-                            <div class="span2"> {{ porcentaje|number_format('1', ',') }}% </div>
-                        </div>
-                    </div>
-                </li>
-                <br>
-            {% else %}
-                <h5 class='shorter' style='text-align:center;'> No hay candidatos registrados</h5>
-            {% endfor %}
-        </ul>
+        {% if estadoResultados %} 
+			<ul class="simple-post-list">
+				{% for candidato in candidatos%}
+					<li style='padding-top:0px;border-bottom:0px' class='span12'>
+						<div class="post-image">
+							<div class="thumbnail">
+								{% set img = (candidato.candidatoImagen) ? candidato.candidatoImagen : 'ImgCandidatos/imgDefault.jpg'%}
+								<img src="{{ asset(img) }}" alt="" style='width:75px;height:100px;'>
+							</div>
+						</div>
+						<div class="post-info" style='padding-top:20px;text-align:left;'>
+							<h5 class='shorter'> {{ candidato.candidatoNombre }}</h5>
+							<div class="post-meta">
+								Votos: {{ candidato.votaciones }}<br>
+								{% set porcentaje = (totalVotos > 0) ? (candidato.votaciones / totalVotos) * 100 : '0'  %}
+								<div class="span6">
+									<div class="progress">
+										<div class="bar" style="width: {{ porcentaje ~ '%;' }}"></div>
+									</div>
+								</div>
+								<div class="span2"> {{ porcentaje|number_format('1', ',') }}% </div>
+							</div>
+						</div>
+					</li>
+					<br>
+				{% else %}
+					<h5 class='shorter' style='text-align:center;'> No hay candidatos registrados</h5>
+				{% endfor %}
+			</ul>
+		{% else %}
+
+			<h2>Los resultados no esta activa en este momento</h2>
+			<div class="row">
+				<div class="span10">
+					<p class="lead">
+						Los resultados de las votaciones se encuentran deshabilitados por el administrador
+						<br/><br/>
+						Muchas gracias por participar.
+						<br/><br/>
+					</p>
+				</div>
+			</div>
+			
+		{% endif %}
         </div>
         <div class="span1"></div>
     </div>
