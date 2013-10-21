@@ -15,6 +15,6 @@ parameters:
     secret:            1e4a565a79ff96059da1fd1075f2b34bd
 
     votaciones_fecha_inicio: 2013-10-20 00:00:00
-    votaciones_fecha_fin: 2013-10-20 00:00:00
+    votaciones_fecha_fin: 2013-11-20 00:00:00
     resultados_fecha_inicio: 2013-10-20 00:00:00
-    resultados_fecha_fin: 2013-10-20 00:00:00
+    resultados_fecha_fin: 2013-11-20 00:00:00

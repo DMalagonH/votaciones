@@ -22,7 +22,8 @@
                     <li class="span3 isotope-item link-item" style="cursor:pointer;" data-cid="{{ candidato.id }}" data-cno="{{ candidato.candidatoNoTarjeton }}">
                         <div class="portfolio-item thumbnail">
                             <a class="thumb-info">
-                                <img alt="" src="{{ asset(candidato.candidatoImagen) }}">
+								{% set img = (candidato.candidatoImagen) ? candidato.candidatoImagen : 'img/candidatos/cand_default.jpg'%}
+                                <img alt="" src="{{ asset(img) }}">
                                 <span class="thumb-info-title">
                                     <span class="thumb-info-inner">{{ candidato.candidatoNombre }}</span>
                                     <span class="thumb-info-type">{{ candidato.candidatoNoTarjeton }}</span>

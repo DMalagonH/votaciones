@@ -20,7 +20,8 @@
                 <div class="flexslider flexslider-center-mobile" data-plugin-options='{"animation":"slide", "animationLoop": true, "maxVisibleItems": 1}'>
                     <ul class="slides">
                         <li>
-                            <img alt="" src="{{ asset(candidato.candidatoImagen) }}">
+							{% set img = (candidato.candidatoImagen) ? candidato.candidatoImagen : 'img/candidatos/cand_default.jpg'%}
+                            <img alt="" src="{{ asset(img) }}">
                         </li>                        
                     </ul>
                 </div>

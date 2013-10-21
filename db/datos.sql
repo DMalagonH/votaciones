@@ -1,12 +1,13 @@
 ﻿INSERT INTO tbl_candidatos VALUES
-(NULL, 'Sonia Jiménez', '1', 'img//candidatos/cand1.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
-(NULL, 'Pedro Gómez', '2', 'img//candidatos/cand2.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
-NULL, 'Tatiana Pérez', '3', 'img//candidatos/cand3.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
-(NULL, 'Jorge londoño', '4', 'img//candidatos/cand4.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
-(NULL, 'Juan López', '5', 'img//candidatos/cand5.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
-(NULL, 'Maria Castañeda', '6', 'img//candidatos/cand6.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
-(NULL, 'Dario Uribe', '7', 'img//candidatos/cand7.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com');
-
+(NULL, 'Sonia Jiménez', '1', 'img/candidatos/cand1.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
+(NULL, 'Pedro Gómez', '2', 'img/candidatos/cand2.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
+(NULL, 'Tatiana Pérez', '3', 'img/candidatos/cand3.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
+(NULL, 'Jorge londoño', '4', 'img/candidatos/cand4.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
+(NULL, 'Juan López', '5', 'img/candidatos/cand5.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
+(NULL, 'Maria Castañeda', '6', 'img/candidatos/cand6.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
+(NULL, 'Dario Uribe', '7', 'img/candidatos/cand7.jpg', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
+(NULL, 'Dario Perez', '8', '', null, null, null, 'http://www.facebook.com', 'http://www.twitter.com', 'http://www.linkedin.com'),
+(NULL, 'Voto en blanco', '9', 'img/candidatos/cand_blanco.jpg', null, null, null, null, null, null);
 
 UPDATE tbl_candidatos
 SET
