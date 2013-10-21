@@ -1,4 +1,10 @@
 {% set sess_user = app.session.get('sess_user') %}
+{% set fActual = "now"|date("U") %}
+{% set votaciones_fecha_inicio = (votaciones_fecha_inicio) ? votaciones_fecha_inicio : fActual - 10000 %}
+{% set votaciones_fecha_fin = (votaciones_fecha_fin) ? votaciones_fecha_fin : fActual + 10000 %}
+{% set resultados_fecha_inicio = (resultados_fecha_inicio) ? resultados_fecha_inicio : fActual - 10000 %}
+{% set resultados_fecha_fin = (resultados_fecha_fin) ? resultados_fecha_fin : fActual + 10000 %}
+
 <!DOCTYPE html>
 
 <!--[if IE 8]>			<html class="ie ie8"> <![endif]-->

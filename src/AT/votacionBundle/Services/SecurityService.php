@@ -7,12 +7,14 @@ class SecurityService
     protected $doctrine;
     protected $session;
     protected $em;
+    protected $container;
         
-    function __construct($doctrine, $session) 
+    function __construct($container) 
     {
-        $this->doctrine = $doctrine;
-        $this->session = $session;
-        $this->em = $doctrine->getManager();
+		$this->container = $container;
+		$this->doctrine = $container->get('doctrine');
+		$this->session = $container->get('session');
+		$this->em = $this->doctrine->getManager();
     }
     
    /**
@@ -325,5 +327,51 @@ class SecurityService
         
         return $return;
     }
+
+	/**
+	 * Funcion para retornar parametros de fechas de inicio y fin de votaciones y resultados
+	 *
+	 * @author Camilo Quijano <camilo@altactic.com>
+	 * @version 1
+	 */
+    public function getParameters()
+    {
+		$parameters['votaciones_fecha_inicio'] = $this->container->getParameter('votaciones_fecha_inicio');
+		$parameters['votaciones_fecha_fin'] = $this->container->getParameter('votaciones_fecha_fin');
+		$parameters['resultados_fecha_inicio'] = $this->container->getParameter('resultados_fecha_inicio');
+		$parameters['resultados_fecha_fin'] = $this->container->getParameter('resultados_fecha_fin');
+
+		return $parameters;
+	}
+
+	public function getVotacionesResultadosEstado()
+	{
+		$parameters = $this->getParameters();
+
+		$now = new \DateTime();
+		$fActualU = $now->format('U');
+		$estado['fechaActual'] = $fActualU;
+		$estado['votacionesActivas'] = 0;
+		$estado['resultadosActivos'] = 0;
+
+		$parameters['votaciones_fecha_inicio'] = ($parameters['votaciones_fecha_inicio']) ? $parameters['votaciones_fecha_inicio'] : $fActualU -10000;
+		$parameters['votaciones_fecha_fin'] = ($parameters['votaciones_fecha_fin']) ? $parameters['votaciones_fecha_fin'] : $fActualU +10000;
+		$parameters['resultados_fecha_inicio'] = ($parameters['resultados_fecha_inicio']) ? $parameters['resultados_fecha_inicio'] : $fActualU -10000;
+		$parameters['resultados_fecha_fin'] = ($parameters['resultados_fecha_fin']) ? $parameters['resultados_fecha_fin'] : $fActualU +10000;
+		
+		if (($parameters['votaciones_fecha_inicio'] < $fActualU) && ($parameters['votaciones_fecha_fin'] > $fActualU))
+		{
+			$estado['votacionesActivas'] = 1;
+		}
+		
+		if (($parameters['resultados_fecha_inicio'] < $fActualU) && ($parameters['resultados_fecha_fin'] > $fActualU))
+		{
+			$estado['resultadosActivos'] = 1;
+		}
+
+		return $estado;
+	}
+
+	
 }
 ?>
