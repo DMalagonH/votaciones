@@ -1,11 +1,14 @@
+<li class="{% if route == 'candidatos' or route == 'detalle_candidato' %}active{% endif %}">
+    <a href="{{ path('candidatos') }}">Candidatos</a>
+</li>
 <li class="{% if route == 'registro' %}active{% endif %}">
     <a href="{{ path('registro') }}" >Registrarse</a>
-</li>
-<li class="{% if route == 'login' %}active{% endif %}">
-    <a href="{{ path('login') }}">Login</a>
 </li>
 {% if resultados_fecha_inicio < fActual and resultados_fecha_fin > fActual %}
 	<li class="{% if route == 'resultado_votaciones' %}active{% endif %}">
 		<a href="{{ path('resultado_votaciones') }}">Resultados</a>
 	</li>
 {% endif %}
+<li class="{% if route == 'login' %}active{% endif %}">
+    <a href="{{ path('login') }}">Login</a>
+</li>
