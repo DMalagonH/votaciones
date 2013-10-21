@@ -1,14 +1,14 @@
 <li class="{% if route == 'votacion' %}active{% endif %}">
     <a href="{{ path('votacion') }}">Votar</a>
 </li>
-<li class="{% if route == 'votacion' %}active{% endif %}">
+<li class="{% if route == 'validar_votos_index' %}active{% endif %}">
     <a href="{{ path('validar_votos_index') }}">Validar votación</a>
 </li>
-<li class="{% if route == 'votacion' %}active{% endif %}">
+<li class="{% if route == 'validados_votos_cancelar' %}active{% endif %}">
     <a href="{{ path('validados_votos_cancelar') }}">Cancelar validación</a>
 </li>
-<li class="{% if route == 'votacion' %}active{% endif %}">
-    <a href="{{ path('votacion') }}">Usuarios</a>
+<li class="{% if route == 'usuarios' or route == 'usuarios_new' or route == 'usuarios_edit' or route == 'usuarios_show' %}active{% endif %}">
+    <a href="{{ path('usuarios') }}">Usuarios</a>
 </li>
 <li class="{% if route == 'resultado_votaciones' %}active{% endif %}">
     <a href="{{ path('resultado_votaciones') }}">Resultados</a>

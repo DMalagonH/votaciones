@@ -303,9 +303,17 @@ class SecurityService
                     // Rutas de votacion
                     'votacion',
                     'confirmar_voto',
-                    'registrar_voto'
+                    'registrar_voto',
                     //ruta para validacion de votos
+                    'validar_votos',
+                    'validar_votos_index',
+                    'validados_votos_cancelar',
                     //rutas para crud de usuarios
+                    'usuarios',
+                    'usuarios_new',
+                    'usuarios_edit',
+                    'usuarios_show',
+                    
                 );
             }
             

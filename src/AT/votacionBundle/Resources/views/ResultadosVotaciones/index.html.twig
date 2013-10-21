@@ -4,7 +4,7 @@
     {% if sess_user.usuarioRol is defined %}
         {% if sess_user.usuarioRol == 'user' %}
             {% include '::menu_votacion.html.twig' %}
-        {% elseif sess_user.usuarioRol == 'user' %}
+        {% elseif sess_user.usuarioRol == 'admin' %}
             {% include '::menu_admin.html.twig' %}
         {% endif %}
     {% else %}    
@@ -14,6 +14,9 @@
 
 {% block body %}
     <div class="row">
+        <div class="span1"></div>
+        <div class="span10">
+        
         <ul class="simple-post-list">
             {% for candidato in candidatos%}
                 <li style='padding-top:0px;border-bottom:0px' class='span12'>
@@ -42,5 +45,7 @@
                 <h5 class='shorter' style='text-align:center;'> No hay candidatos registrados</h5>
             {% endfor %}
         </ul>
+        </div>
+        <div class="span1"></div>
     </div>
 {% endblock body %}

@@ -1,7 +1,13 @@
 {% extends "::base.html.twig" %}
 
 {% block menu %}
-    {% include '::menu_votacion.html.twig' %}
+    {% if sess_user.usuarioRol is defined %}
+        {% if sess_user.usuarioRol == 'user' %}
+            {% include '::menu_votacion.html.twig' %}
+        {% elseif sess_user.usuarioRol == 'admin' %}
+            {% include '::menu_admin.html.twig' %}
+        {% endif %}
+    {% endif %}
 {% endblock menu %}
 
 {% block content %}
