@@ -1,14 +1,11 @@
 ﻿INSERT INTO tbl_candidatos (id, candidato_nombre, candidato_no_tarjeton, candidato_imagen) VALUES
-(NULL, 'NCand1', '1', 'ImgCandidatos/can1.jpg'),
-(NULL, 'NCand2', '2', 'ImgCandidatos/can2.jpg'),
-(NULL, 'NCand3', '3', 'ImgCandidatos/can3.jpg'),
-(NULL, 'NCand4', '4', 'ImgCandidatos/can4.jpg'),
-(NULL, 'NCand5', '5', 'ImgCandidatos/can5.jpg'),
-(NULL, 'NCand6', '6', 'ImgCandidatos/can6.jpg'),
-(NULL, 'NCand7', '7', 'ImgCandidatos/can7.jpg'),
-(NULL, 'NCand8', '8', 'ImgCandidatos/can8.jpg'),
-(NULL, 'NCand9', '9', 'ImgCandidatos/can9.jpg'),
-(NULL, 'NCand10', '10', 'ImgCandidatos/can10.jpg');
+(NULL, 'Sonia Jiménez', '1', 'img//candidatos/cand1.jpg'),
+(NULL, 'Pedro Gómez', '2', 'img//candidatos/cand2.jpg'),
+(NULL, 'Tatiana Pérez', '3', 'img//candidatos/cand3.jpg'),
+(NULL, 'Jorge londoño', '4', 'img//candidatos/cand4.jpg'),
+(NULL, 'Juan López', '5', 'img//candidatos/cand5.jpg'),
+(NULL, 'Maria Castañeda', '6', 'img//candidatos/cand6.jpg'),
+(NULL, 'Dario Uribe', '7', 'img//candidatos/cand7.jpg');
 
 INSERT INTO tbl_usuarios (id, usuario_email, usuario_nombre, usuario_apellido, usuario_documento, usuario_rol) VALUES
 (NULL, 'mail1@test.com', 'name1', 'apellido1', 'doc1', null),
