@@ -7,9 +7,11 @@
 <li class="{% if route == 'validados_votos_cancelar' %}active{% endif %}">
     <a href="{{ path('validados_votos_cancelar') }}">Cancelar validación</a>
 </li>
-<li class="{% if route == 'usuarios' or route == 'usuarios_new' or route == 'usuarios_edit' or route == 'usuarios_show' %}active{% endif %}">
-    <a href="{{ path('usuarios') }}">Usuarios</a>
-</li>
+{% if sess_user.permisoNuevosUsuarios %}
+	<li class="{% if route == 'usuarios' or route == 'usuarios_new' or route == 'usuarios_edit' or route == 'usuarios_show' %}active{% endif %}">
+		<a href="{{ path('usuarios') }}">Usuarios</a>
+	</li>
+{% endif %}
 <li class="{% if route == 'resultado_votaciones' %}active{% endif %}">
     <a href="{{ path('resultado_votaciones') }}">Resultados</a>
 </li>

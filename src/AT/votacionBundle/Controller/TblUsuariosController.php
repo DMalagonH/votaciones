@@ -31,10 +31,16 @@ class TblUsuariosController extends Controller
 		$security = $this->get('security');
         if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
         if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
-        
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('votacionBundle:TblUsuarios')->findAll();
-        return array('entities' => $entities );
+
+		// Validar si tiene permiso a acceso de crud de usuarios
+        $session = $this->get('session')->get('sess_user');
+        $permisoCrear = $session['permisoNuevosUsuarios'];
+        if (!$permisoCrear) { throw $this->createNotFoundException('Not Found'); }
+			
+		$em = $this->getDoctrine()->getManager();
+		$entities = $em->getRepository('votacionBundle:TblUsuarios')->findAll();
+		return array('entities' => $entities );
+
     }
     
     /**
@@ -53,60 +59,66 @@ class TblUsuariosController extends Controller
         $security = $this->get('security');
         if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
         if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+
+		// Validar si tiene permiso a acceso de crud de usuarios
+        $session = $this->get('session')->get('sess_user');
+        $permisoCrear = $session['permisoNuevosUsuarios'];
+        if (!$permisoCrear) { throw $this->createNotFoundException('Not Found'); }
+
+		$form = $this->createUsuarioForm();
+		
+		if ($request->getMethod() == 'POST')
+		{
+			$form->bind($request);
+			if ($form->isValid())
+			{
+				$data = $form->getData();
+				if ($this->validateForm($data)) {
+					
+					if(!$this->existeUsuario($data['email'], $data['doc']))
+					{
+						$enc_pass = $security->encriptar($data['pass']);
+						
+						$hash = uniqid('u', true);
+
+						$usuario = new \AT\votacionBundle\Entity\TblUsuarios();
+
+						$usuario->setUsuarioActivado($data['usuarioActivado']);
+						$usuario->setUsuarioRol('admin');
+						$usuario->setPermisoNuevosUsuarios($data['permisoNuevosUsuarios']);
+
+						$usuario->setUsuarioNombre($data['nombre']);
+						$usuario->setUsuarioApellido($data['apellido']);
+						$usuario->setUsuarioEmail($data['email']);
+						$usuario->setUsuarioDocumento($data['doc']);
+						$usuario->setUsuarioTipoDocumento('Cédula de ciudadanía');
+						$usuario->setUsuarioProfesion($data['profesion']);
+						$usuario->setUsuarioTelefono($data['telefono']);
+						$usuario->setUsuarioCelular($data['celular']);
+								
+						$usuario->setUsuarioPassword($enc_pass);
+						$usuario->setUsuarioHash($hash);
+
+						$em = $this->getDoctrine()->getManager();
+						$em->persist($usuario);     
+						$em->flush();
+
+						$this->get('session')->getFlashBag()->add('alerts', array("type" => "success", "title" => "", "text" => "Usuario creado correctamente"));
+						return $this->redirect($this->generateUrl('usuarios_show', array('id' => $usuario->getId())));
+					}
+					else {
+						$this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "", "text" => "Ya existe un usuario con esta información"));
+					}
+				}
+				else {
+					$this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "*Datos inválidos:", "text" => "Verifique la información suministrada"));
+				}
+			}
+			else {
+				$this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
+			}
+		}
         
-        $form = $this->createUsuarioForm();
-        
-        if ($request->getMethod() == 'POST')
-        {
-            $form->bind($request);
-            if ($form->isValid())
-            {
-                $data = $form->getData();
-                if ($this->validateForm($data)) {
-                    
-                    if(!$this->existeUsuario($data['email'], $data['doc']))
-                    {
-                        $enc_pass = $security->encriptar($data['pass']);
-                        
-                        $hash = uniqid('u', true);
-
-                        $usuario = new \AT\votacionBundle\Entity\TblUsuarios();
-
-                        $usuario->setUsuarioActivado($data['usuarioActivado']);
-                        $usuario->setUsuarioRol('admin');
-                        $usuario->setPermisoNuevosUsuarios($data['permisoNuevosUsuarios']);
-
-                        $usuario->setUsuarioNombre($data['nombre']);
-                        $usuario->setUsuarioApellido($data['apellido']);
-                        $usuario->setUsuarioEmail($data['email']);
-                        $usuario->setUsuarioDocumento($data['doc']);
-                        $usuario->setUsuarioTipoDocumento('Cédula de ciudadanía');
-                        $usuario->setUsuarioProfesion($data['profesion']);
-                        $usuario->setUsuarioTelefono($data['telefono']);
-                        $usuario->setUsuarioCelular($data['celular']);
-                                
-                        $usuario->setUsuarioPassword($enc_pass);
-                        $usuario->setUsuarioHash($hash);
-
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($usuario);     
-                        $em->flush();
-
-                        $this->get('session')->getFlashBag()->add('alerts', array("type" => "success", "title" => "", "text" => "Usuario creado correctamente"));
-                        return $this->redirect($this->generateUrl('usuarios_show', array('id' => $usuario->getId())));
-                    }
-                    else {
-                        $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "", "text" => "Ya existe un usuario con esta información"));
-                    }
-                }
-                else {
-                    $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "*Datos inválidos:", "text" => "Verifique la información suministrada"));
-                }
-            }
-            else {
-                $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
-            }
-        }
 
         return array(
             'form'   => $form->createView(),
@@ -128,6 +140,11 @@ class TblUsuariosController extends Controller
 		$security = $this->get('security');
         if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
         if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+
+        // Validar si tiene permiso a acceso de crud de usuarios
+        $session = $this->get('session')->get('sess_user');
+        $permisoCrear = $session['permisoNuevosUsuarios'];
+        if (!$permisoCrear) { throw $this->createNotFoundException('Not Found'); }
         
         $em = $this->getDoctrine()->getManager();
         $usuario = $em->getRepository('votacionBundle:TblUsuarios')->find($id);
@@ -147,26 +164,24 @@ class TblUsuariosController extends Controller
                 $data = $editForm->getData();
                 if ($this->validateFormEdit($data)) {
 
-                        $usuario->setUsuarioActivado($data['usuarioActivado']);
-                        if ($data['permisoNuevosUsuarios']){
-                            $usuario->setUsuarioRol('admin');
-                        }
-                        $usuario->setPermisoNuevosUsuarios($data['permisoNuevosUsuarios']);
-                        $usuario->setUsuarioNombre($data['nombre']);
-                        $usuario->setUsuarioApellido($data['apellido']);
-                        //$usuario->setUsuarioEmail($data['email']);
-                        //$usuario->setUsuarioDocumento($data['doc']);
-                        //$usuario->setUsuarioTipoDocumento('Cédula de ciudadanía');
-                        $usuario->setUsuarioProfesion($data['profesion']);
-                        $usuario->setUsuarioTelefono($data['telefono']);
-                        $usuario->setUsuarioCelular($data['celular']);
-                        //$usuario->setUsuarioPassword($enc_pass);
-                        //$usuario->setUsuarioHash($hash);
-                        $em->persist($usuario);
-                        $em->flush();
-                        
-                        $this->get('session')->getFlashBag()->add('alerts', array("type" => "success", "title" => "", "text" => "Usuario editado correctamente"));
-                        return $this->redirect($this->generateUrl('usuarios_show', array('id' => $id)));
+					$usuario->setUsuarioActivado($data['usuarioActivado']);
+					$usuario->setUsuarioRol($data['rol']);
+					$usuario->setPermisoNuevosUsuarios($data['permisoNuevosUsuarios']);
+					$usuario->setUsuarioNombre($data['nombre']);
+					$usuario->setUsuarioApellido($data['apellido']);
+					//$usuario->setUsuarioEmail($data['email']);
+					//$usuario->setUsuarioDocumento($data['doc']);
+					//$usuario->setUsuarioTipoDocumento('Cédula de ciudadanía');
+					$usuario->setUsuarioProfesion($data['profesion']);
+					$usuario->setUsuarioTelefono($data['telefono']);
+					$usuario->setUsuarioCelular($data['celular']);
+					//$usuario->setUsuarioPassword($enc_pass);
+					//$usuario->setUsuarioHash($hash);
+					$em->persist($usuario);
+					$em->flush();
+					
+					$this->get('session')->getFlashBag()->add('alerts', array("type" => "success", "title" => "", "text" => "Usuario editado correctamente"));
+					return $this->redirect($this->generateUrl('usuarios_show', array('id' => $id)));
                 }    
             }
             $this->get('session')->getFlashBag()->add('alerts', array("type" => "error", "title" => "Datos inválidos:", "text" => "Verifique la información suministrada"));
@@ -195,6 +210,11 @@ class TblUsuariosController extends Controller
 		$security = $this->get('security');
         if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
         if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+
+        // Validar si tiene permiso a acceso de crud de usuarios
+        $session = $this->get('session')->get('sess_user');
+        $permisoCrear = $session['permisoNuevosUsuarios'];
+        if (!$permisoCrear) { throw $this->createNotFoundException('Not Found'); }
         
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('votacionBundle:TblUsuarios')->find($id);
@@ -302,12 +322,14 @@ class TblUsuariosController extends Controller
             'profesion' => null,
             //'pass' => null,
             //'pass_conf' => null,
+            'rol' => '',
             'usuarioActivado' => null,
             'permisoNuevosUsuarios' => null,
         );
         
         $pNU = ($entity->getPermisoNuevosUsuarios()) ? Array('checked' => 'checked') : Array();
         $pNA = ($entity->getUsuarioActivado()) ? Array('checked' => 'checked') : Array();
+        $ArrayRoles = Array('user' => 'Usuario', 'admin' => 'Administrador');
         $form = $this->createFormBuilder($formData)
            ->add('nombre', 'text', array('required' => true, 'attr' => array('value' => $entity->getUsuarioNombre())))
            ->add('apellido', 'text', array('required' => true, 'attr' => array('value' => $entity->getUsuarioApellido())))
@@ -320,6 +342,7 @@ class TblUsuariosController extends Controller
            //->add('pass_conf', 'password', array('required' => true))
            ->add('permisoNuevosUsuarios', 'checkbox', array('required' => false, 'attr' => $pNU))
            ->add('usuarioActivado', 'checkbox', array('required' => false, 'attr' => $pNA))
+           ->add('rol', 'choice', array('choices'  => $ArrayRoles, 'preferred_choices' => array($entity->getUsuarioRol())))
            ->getForm();
         
         return $form;
@@ -392,6 +415,7 @@ class TblUsuariosController extends Controller
         $val['celular'] = $validate->validateInteger($data['celular'], false);
         $val['telefono'] = $validate->validateInteger($data['telefono'], false);
         $val['profesion'] = $validate->validateTextOnly($data['profesion'], false);
+        $val['rol'] = ($data['rol'] == 'admin' or $data['rol'] == 'user') ? true : false;
         
         foreach($val as $v)
         {

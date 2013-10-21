@@ -49,6 +49,10 @@
                         <td class="td-label">Profesión</td>
                         <td>{{ form_widget(edit_form.profesion, {'attr':{'class':'input-large'} }) }}</td>
                     </tr>
+                    <tr>
+                        <td class="td-label">Rol</td>
+                        <td>{{ form_widget(edit_form.rol, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
                     {#
                     <tr>
                         <td class="td-label">Correo electrónico *</td>
@@ -58,10 +62,7 @@
                         <td class="td-label">Cédula *</td>
                         <td>{{ form_widget(edit_form.doc, {'attr':{'class':'input-large'} }) }}</td>
                     </tr>
-                    <tr>
-                        <td class="td-label">Rol</td>
-                        <td>{{ form_widget(form.usuarioRol, {'attr':{'class':'input-large'} }) }}</td>
-                    </tr>
+                    
                     #}
                     <tr>
                         <td class="td-label">Activado</td>
@@ -69,7 +70,7 @@
                     </tr>
 
                     <tr>
-                        <td class="td-label">Crear nuevos usuarios</td>
+                        <td class="td-label">Acceso usuarios</td>
                         <td>{{ form_widget(edit_form.permisoNuevosUsuarios, {'attr':{'class':'input-large'} }) }}</td>
                     </tr>
                     <tr>
