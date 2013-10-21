@@ -28,6 +28,10 @@ class TblUsuariosController extends Controller
      */
     public function indexAction()
     {
+		$security = $this->get('security');
+        if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
+        if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+        
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('votacionBundle:TblUsuarios')->findAll();
         return array('entities' => $entities );
@@ -47,6 +51,9 @@ class TblUsuariosController extends Controller
     public function newAction(Request $request)
     {
         $security = $this->get('security');
+        if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
+        if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+        
         $form = $this->createUsuarioForm();
         
         if ($request->getMethod() == 'POST')
@@ -118,6 +125,10 @@ class TblUsuariosController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+		$security = $this->get('security');
+        if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
+        if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+        
         $em = $this->getDoctrine()->getManager();
         $usuario = $em->getRepository('votacionBundle:TblUsuarios')->find($id);
 
@@ -181,6 +192,10 @@ class TblUsuariosController extends Controller
      */
     public function showAction($id)
     {
+		$security = $this->get('security');
+        if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
+        if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+        
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('votacionBundle:TblUsuarios')->find($id);
 
