@@ -113,7 +113,7 @@ class RegistroController extends Controller
            ->add('apellido', 'text', array('required' => true))
            ->add('email', 'email', array('required' => true))
            ->add('doc', 'text', array('required' => true))
-           ->add('celular', 'text', array('required' => false))
+           ->add('celular', 'text', array('required' => true))
            ->add('telefono', 'text', array('required' => false))
            ->add('profesion', 'text', array('required' => false))
            ->add('pass', 'password', array('required' => true))
@@ -140,7 +140,7 @@ class RegistroController extends Controller
         $val['apellido'] = $validate->validateTextOnly($data['apellido'], true);
         $val['email'] = $validate->validateEmail($data['email'], true);
         $val['doc'] = $validate->validateInteger($data['doc'], true);
-        $val['celular'] = $validate->validateInteger($data['celular'], false);
+        $val['celular'] = $validate->validateInteger($data['celular'], true);
         $val['telefono'] = $validate->validateInteger($data['telefono'], false);
         $val['profesion'] = $validate->validateTextOnly($data['profesion'], false);
         
