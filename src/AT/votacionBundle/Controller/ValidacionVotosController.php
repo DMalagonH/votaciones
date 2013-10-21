@@ -23,6 +23,9 @@ class ValidacionVotosController extends Controller
     public function indexAction(Request $request)
     {
         $security = $this->get('security');
+        if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
+        if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+
         $pagLetras = $this->getPaginacionAbecedario(0);
         
         if($request->getMethod() == 'POST') 
@@ -62,7 +65,10 @@ class ValidacionVotosController extends Controller
      */
     public function validadosAction(Request $request)
     {
-        $security = $this->get('security');
+		$security = $this->get('security');
+        if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
+        if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+        
         $pagLetras = $this->getPaginacionAbecedario(1);
         
         if($request->getMethod() == 'POST') 
@@ -102,6 +108,10 @@ class ValidacionVotosController extends Controller
      */
     public function validarVoto(Request $request)
     {
+        $security = $this->get('security');
+        if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
+        if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+        
         if($request->isXmlHttpRequest() && $request->getMethod() == 'POST'){
             
             $em = $this->getDoctrine()->getManager();
