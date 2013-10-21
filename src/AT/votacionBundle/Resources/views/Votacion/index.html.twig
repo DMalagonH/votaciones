@@ -11,6 +11,7 @@
 {% endblock menu %}
 
 {% block content %}
+{% if estado.votacionesActivas %}
     {% if candidatos and votoRegistrado == false %}
         <h2 style="margin-bottom: 0px;" >Seleccione el candidato por el que desea votar</h2>
         <p>Para seleccionar el candidato haga click sobre la imagen y luego confirme su voto en la ventana emergente.</p>
@@ -49,6 +50,24 @@
             </div>
         </div>
     {% endif %}
+{% else %}
+    <h2>La votación no esta activa en este momento</h2>
+    <div class="row">
+        <div class="span10">
+            <p class="lead">
+                El proceso de votación ha sido deshabilitado por el administrador
+                <br/><br/>
+                Muchas gracias por participar.
+                <br/><br/>
+                {% if estado.resultadosActivos %}
+                    <a class="btn btn-info" href="{{ path('resultado_votaciones') }}">Ver resultados</a>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+{% endif %}
+
     <div id="modal-confirm" class="modal hide fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

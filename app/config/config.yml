@@ -26,6 +26,11 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+       resultados_fecha_inicio: %resultados_fecha_inicio%
+       resultados_fecha_fin: %resultados_fecha_fin%
+       votaciones_fecha_inicio: %votaciones_fecha_inicio%
+       votaciones_fecha_fin: %votaciones_fecha_fin%
 
 # Assetic Configuration
 assetic:

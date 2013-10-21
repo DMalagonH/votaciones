@@ -1,7 +1,7 @@
 services:
     security:
         class: AT\votacionBundle\Services\SecurityService
-        arguments: ["@doctrine", "@session"]
+        arguments: ["@service_container"]
     validate:
         class: AT\votacionBundle\Services\ValidateService
     mail:

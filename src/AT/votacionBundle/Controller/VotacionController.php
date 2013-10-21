@@ -17,30 +17,37 @@ class VotacionController extends Controller
      * @Template("votacionBundle:Votacion:index.html.twig")
      * @author Diego Malagón <diego@altactic.com>
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return Resonse
+     * @return Response
      */
     public function indexAction(Request $request)
     {
         $security = $this->get('security');
         if(!$security->autentication()){ return $this->redirect($this->generateUrl('login'));}
         if(!$security->autorization($this->getRequest()->get('_route'))){ throw $this->createNotFoundException("Acceso denegado");}
+
+        $estado = $security->getVotacionesResultadosEstado();
         
         $response = array();
-        
+        $candidatos = array();
         if(!$this->existeVoto())
         {
-            $candidatos = $this->getCandidatos();
+			if ($estado['votacionesActivas'] == 1) {
+				$candidatos = $this->getCandidatos();
+			}
+            
                                     
             $response = array(
                 'candidatos' => $candidatos,
-                'votoRegistrado' => false
+                'votoRegistrado' => false,
+                'estado' => $estado
             );
         }
         else
         {
             $response = array(
-                'candidatos' => array(),
+                'candidatos' => $candidatos,
                 'votoRegistrado' => true,
+                'estado' => $estado
             );
         }
         
