@@ -291,7 +291,7 @@ class TblUsuariosController extends Controller
            ->add('apellido', 'text', array('required' => true))
            ->add('email', 'email', array('required' => true))
            ->add('doc', 'text', array('required' => true))
-           ->add('celular', 'text', array('required' => false))
+           ->add('celular', 'text', array('required' => true))
            ->add('telefono', 'text', array('required' => false))
            ->add('profesion', 'text', array('required' => false))
            ->add('pass', 'password', array('required' => true))
@@ -335,7 +335,7 @@ class TblUsuariosController extends Controller
            ->add('apellido', 'text', array('required' => true, 'attr' => array('value' => $entity->getUsuarioApellido())))
            //->add('email', 'email', array('required' => true, 'attr' => array('value' => $entity->getUsuarioEmail())))
            //->add('doc', 'text', array('required' => true, 'attr' => array('value' => $entity->getUsuarioDocumento())))
-           ->add('celular', 'text', array('required' => false, 'attr' => array('value' => $entity->getUsuarioCelular())))
+           ->add('celular', 'text', array('required' => true, 'attr' => array('value' => $entity->getUsuarioCelular())))
            ->add('telefono', 'text', array('required' => false, 'attr' => array('value' => $entity->getUsuarioTelefono())))
            ->add('profesion', 'text', array('required' => false, 'attr' => array('value' => $entity->getUsuarioProfesion())))
            //->add('pass', 'password', array('required' => true))
@@ -367,7 +367,7 @@ class TblUsuariosController extends Controller
         $val['apellido'] = $validate->validateTextOnly($data['apellido'], true);
         $val['email'] = $validate->validateEmail($data['email'], true);
         $val['doc'] = $validate->validateInteger($data['doc'], true);
-        $val['celular'] = $validate->validateInteger($data['celular'], false);
+        $val['celular'] = $validate->validateInteger($data['celular'], true);
         $val['telefono'] = $validate->validateInteger($data['telefono'], false);
         $val['profesion'] = $validate->validateTextOnly($data['profesion'], false);
         
@@ -412,7 +412,7 @@ class TblUsuariosController extends Controller
         $val['apellido'] = $validate->validateTextOnly($data['apellido'], true);
         //$val['email'] = $validate->validateEmail($data['email'], true);
         //$val['doc'] = $validate->validateInteger($data['doc'], true);
-        $val['celular'] = $validate->validateInteger($data['celular'], false);
+        $val['celular'] = $validate->validateInteger($data['celular'], true);
         $val['telefono'] = $validate->validateInteger($data['telefono'], false);
         $val['profesion'] = $validate->validateTextOnly($data['profesion'], false);
         $val['rol'] = ($data['rol'] == 'admin' or $data['rol'] == 'user') ? true : false;
