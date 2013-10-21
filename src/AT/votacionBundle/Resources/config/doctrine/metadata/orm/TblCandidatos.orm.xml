@@ -8,5 +8,10 @@
     <field name="candidatoNoTarjeton" type="integer" column="candidato_no_tarjeton" nullable="false"/>
     <field name="candidatoImagen" type="string" column="candidato_imagen" length="60" nullable="true"/>
     <field name="candidatoPartido" type="string" column="candidato_partido" length="60" nullable="true"/>
+    <field name="candidatoDescripcionCorta" type="text" column="candidato_descripcion_corta" nullable="true"/>
+    <field name="candidatoDescripcion" type="text" column="candidato_descripcion" nullable="true"/>
+    <field name="candidatoLinkFacebook" type="string" column="candidato_link_facebook" length="100" nullable="true"/>
+    <field name="candidatoLinkTwiter" type="string" column="candidato_link_twiter" length="100" nullable="true"/>
+    <field name="candidatoLinkLinkedin" type="string" column="candidato_link_linkedin" length="100" nullable="true"/>
   </entity>
 </doctrine-mapping>

@@ -1,0 +1,45 @@
+{% extends "::base.html.twig" %}
+
+{% block menu %}
+    {% if sess_user.usuarioRol is defined %}
+        {% if sess_user.usuarioRol == 'user' %}
+            {% include '::menu_votacion.html.twig' %}
+        {% elseif sess_user.usuarioRol == 'admin' %}
+            {% include '::menu_admin.html.twig' %}
+        {% endif %}
+    {% else %}    
+        {% include '::menu_registro.html.twig' %}
+    {% endif %}
+{% endblock menu %}
+
+{% block content %}
+    {% if candidato %}
+        <h2>{{ candidato.candidatoNombre }}</h2>
+        <div class="row">
+            <div class="span6">
+                <div class="flexslider flexslider-center-mobile" data-plugin-options='{"animation":"slide", "animationLoop": true, "maxVisibleItems": 1}'>
+                    <ul class="slides">
+                        <li>
+                            <img alt="" src="{{ asset(candidato.candidatoImagen) }}">
+                        </li>                        
+                    </ul>
+                </div>
+            </div>
+
+            <div class="span6">
+
+                <h4><strong>#{{ candidato.candidatoNoTarjeton }}</strong> {{ candidato.candidatoNombre }}</h4>
+                <p>{{ candidato.candidatoDescripcion|raw() }}</p>
+
+                <ul class="list icons unstyled">
+                    {% if candidato.candidatoLinkFacebook %}<li><i class="icon-facebook"></i> <a href="{{ candidato.candidatoLinkFacebook }}" target="_blank">Facebook</a></li>{% endif %}
+                    {% if candidato.candidatoLinkTwiter%}<li><i class="icon-twitter"></i> <a href="{{ candidato.candidatoLinkTwiter }}" target="_blank">Twiter</a></li>{% endif %}
+                    {% if candidato.candidatoLinkLinkedin %}<li><i class="icon-linkedin"></i> <a href="{{ candidato.candidatoLinkLinkedin }}" target="_blank">Linked in</a></li>{% endif %}
+                </ul>
+                <div style="text-align: right;">
+                    <a class="btn btn-primary" href="{{ path('candidatos') }}">Candidatos</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

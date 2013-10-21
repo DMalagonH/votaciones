@@ -115,14 +115,13 @@
 			</header>
             <hr class="" style="margin-top: 0px;"/>
 			<div role="main" class="main">
-				<div id="content" class="content full">
+				
 
-                    <div class="container">
+                    <div id="app-container" class="container">
                         {% include '::alerts.html.twig' %}
                         {% block body %}{% endblock %}
                         {% block content %}{% endblock %}
 					</div>
-				</div>
 			</div>
 
 			<footer id="footer" style="padding:0px;">
@@ -132,7 +131,7 @@
 						<div class="row">
 							<div class="span1">
 								<a href="http://www.altactic.com" class="logo">
-									<img alt="Porto Website Template" src="{{ asset('img/logo-footer.png') }}">
+									<img alt="Altactic" src="{{ asset('img/logo-footer.png') }}">
 								</a>
 							</div>
 							<div class="span7">
@@ -171,7 +170,15 @@
 
 		<!-- Custom JS -->
 		<script src="{{ asset('js/custom.js') }}"></script>
-       
+        
+        <script>
+            $(document).ready(function () {
+                $("#app-container").on("submit", "form", function(e) {
+                    input = $(":submit", this);
+                    input.attr('disabled', true);
+                });
+            });
+        </script>
         {% block script %}{% endblock %}
 	</body>
 </html>

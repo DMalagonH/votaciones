@@ -1059,7 +1059,7 @@ footer h4 {
 }
 
 div.footer-copyright {
-	background: #0C0C0C;
+	background: #969696;
 	border-top: 4px solid #111;
 	margin-top: 40px;
 	padding: 30px 0 10px;
@@ -1089,7 +1089,7 @@ div.footer-copyright nav ul li:first-child {
 }
 
 div.footer-copyright p {
-	color: #555;
+	color: #fff;
 	margin: 0;
 	padding: 0;
 }
