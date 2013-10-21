@@ -16,7 +16,8 @@
     <div class="row">
         <div class="span1"></div>
         <div class="span10">
-        
+
+{% if estadoResultados %}       
         <ul class="simple-post-list">
             {% for candidato in candidatos%}
                 <li style='padding-top:0px;border-bottom:0px' class='span12'>
@@ -45,6 +46,22 @@
                 <h5 class='shorter' style='text-align:center;'> No hay candidatos registrados</h5>
             {% endfor %}
         </ul>
+{% else %}
+
+    <h2>Los resultados no esta activa en este momento</h2>
+    <div class="row">
+        <div class="span10">
+            <p class="lead">
+                Los resultados de las votaciones se encuentran deshabilitados por el administrador
+                <br/><br/>
+                Muchas gracias por participar.
+                <br/><br/>
+            </p>
+        </div>
+    </div>
+
+{% endif %}
+
         </div>
         <div class="span1"></div>
     </div>
