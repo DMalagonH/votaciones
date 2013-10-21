@@ -1,0 +1,117 @@
+{% extends '::base.html.twig' %}
+
+{% block style %}
+    <style>
+        .input-large{
+            width: 100%;
+        }
+        .td-label{
+            width:190px;
+            vertical-align: top;
+            padding-top: 3px;
+        }
+    </style>
+{% endblock style %}
+
+{% block menu %}
+    {% include '::menu_admin.html.twig' %}
+{% endblock menu %}
+
+{% block body %}
+    <div class="row">
+        <div class="span3">	</div>
+        <div class="span6">					  
+            <h3 class="short" style="margin-bottom: 0px;"><strong>Nuevo usuario</strong></h3>
+            <br/>
+
+            <form action="{{ path('usuarios_new') }}" method='POST' {{ form_enctype(form) }} id="contactForm" type="post">
+
+                {{ form_widget(form._token) }}
+                {{ form_errors(form) }}
+                (*) Campos obligatorios<br/><br/>
+                <table border="0" style="width:100%;">
+                    <tr>
+                        <td class="td-label">Nombres * </td>
+                        <td>{{ form_widget(form.nombre, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="td-label">Apellidos *</td>
+                        <td>{{ form_widget(form.apellido, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="td-label">Correo electrónico *</td>
+                        <td>{{ form_widget(form.email, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="td-label">Cédula *</td>
+                        <td>{{ form_widget(form.doc, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="td-label">Móvil</td>
+                        <td>{{ form_widget(form.celular, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="td-label">Teléfono</td>
+                        <td>{{ form_widget(form.telefono, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="td-label">Profesión</td>
+                        <td>{{ form_widget(form.profesion, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    {#
+                    <tr>
+                        <td class="td-label">Rol</td>
+                        <td>{{ form_widget(form.usuarioRol, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    #}
+                    <tr>
+                        <td class="td-label">Activado</td>
+                        <td>{{ form_widget(form.usuarioActivado, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-label">Crear nuevos usuarios</td>
+                        <td>{{ form_widget(form.permisoNuevosUsuarios, {'attr':{'class':'input-large'} }) }}</td>
+                    </tr>
+                    <tr><td colspan='2'><hr></td></tr>
+                    <tr>
+                        <td class="td-label">
+                            Constraseña *
+                            <ul style="font-size: 10px;">
+                                <li style="line-height: 15px;" >Use mayúsculas y minúsculas</li>
+                                <li style="line-height: 15px;" >Use dígitos</li>
+                                <li style="line-height: 15px;" >Use caracteres especiales</li>
+                            </ul>
+                        </td>
+                        <td>
+                            {{ form_widget(form.pass, {'attr':{'class':'password1 input-large'} }) }}
+                            <div class="progress" style="height: 5px; margin-bottom: -2px; margin-left: 15px;">
+                                <div id="progress-bar-pass" class="bar bar-danger" style="width: 0.8%;"></div>
+                            </div>
+                            <div style="font-size: 10px; margin-left: 15px;">Seguridad: <span id="sec-pass">Insuficiente</span></div>    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-label">Confirme su constraseña *</td>
+                        <td>
+                            {{ form_widget(form.pass_conf, {'attr':{'class':'password2 input-large'} }) }}
+                            <div class="progress" style="height:5px; margin-bottom: 10px; margin-left: 15px;">
+                               <div id="span_conf" class="bar bar-danger" style="width: 100%"> </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <a class="btn btn-large" href="{{ path('usuarios') }}">Volver a la lista</a>
+                            <input type="submit" class="btn btn-primary btn-large" value="Guardar"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ asset('js/password.js')}}"></script>
+{% endblock script %}

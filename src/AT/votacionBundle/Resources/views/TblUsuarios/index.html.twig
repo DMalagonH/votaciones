@@ -1,0 +1,86 @@
+{% extends '::base.html.twig' %}
+
+{% block style %}
+    <style type="text/css" title="currentStyle">
+        @import "{{ asset('datatables/media/css/demo_page.css') }}";
+        @import "{{ asset('datatables/media/css/demo_table.css') }}";
+        @import "{{ asset('datatables/media/css/jquery.dataTables_themeroller.css') }}";
+    </style>
+{% endblock style %}
+    
+{% block menu %}
+    {% include '::menu_admin.html.twig' %}
+{% endblock menu %}
+
+{% block body %}
+    <div cass='row' style='padding-bottom:20px;'>
+        <h3 style='margin-bottom:5px;'>Listado de usuarios</h3>
+        <a class="btn btn-mini btn-primary" href="{{ path('usuarios_new') }}">Crear nuevo usuario</a>
+    </div>
+
+    <table class="records_list" id='datatable'>
+        <thead>
+            <tr>
+                <th>Correo</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Documento</th>
+                <th>Rol</th>
+                <th>Activo</th>
+                <th>Agregar usuarios</th>
+                {#
+                <th>Id</th>
+                <th>Usuarioprofesion</th>
+                <th>Usuariotelefono</th>
+                <th>Usuariocelular</th>
+                <th>Usuariotipodocumento</th>
+                <th>Usuariofechanacimiento</th>
+                <th>Usuariopassword</th>
+                <th>Usuariohash</th>#}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.usuarioEmail }}</td>
+                <td>{{ entity.usuarioNombre }}</td>
+                <td>{{ entity.usuarioApellido }}</td>
+                <td>{{ entity.usuarioDocumento }}</td>
+                <td class='center'>{{ entity.usuarioRol }}</td>
+                <td class='center'>
+                    {% if entity.usuarioActivado %}Si{% else %}No{% endif %}
+                </td>
+                <td class='center'>{% if entity.permisoNuevosUsuarios %}Si{% else %}No{% endif %}</td>
+                {#
+                <td><a href="{{ path('usuarios_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.usuarioProfesion }}</td>
+                <td>{{ entity.usuarioTelefono }}</td>
+                <td>{{ entity.usuarioCelular }}</td>
+                <td>{{ entity.usuarioTipoDocumento }}</td>
+                <td>{% if entity.usuarioFechaNacimiento %}{{ entity.usuarioFechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.usuarioPassword }}</td>
+                <td>{{ entity.usuarioHash }}</td>#}
+                <td class='center'>
+                    <a class="btn btn-mini btn-primary" href="{{ path('usuarios_show', { 'id': entity.id }) }}">Detalles</a>
+                    <a class="btn btn-mini btn-primary" href="{{ path('usuarios_edit', { 'id': entity.id }) }}">Editar</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock body %}
+    
+{% block script %}
+    <script type="text/javascript" language="javascript" src="{{ asset('datatables/media/js/jquery.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ asset('datatables/media/js/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" charset="utf-8">
+        var oTable = ''
+        $(document).ready(function() {
+            oTable = $('#datatable').dataTable({
+                //"bJQueryUI": true,
+                //"sPaginationType": "full_numbers"
+            });
+        });
+    </script>
+{% endblock script %}

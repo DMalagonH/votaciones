@@ -1,0 +1,91 @@
+{% extends '::base.html.twig' %}
+
+{% block menu %}
+    {% include '::menu_admin.html.twig' %}
+{% endblock menu %}
+
+{% block body %}
+<div class="row">
+    <div class="span3">	</div>
+        <div class="span6">					  
+            <h3 class="short" style="margin-bottom: 0px;"><strong>Detalles del usuario</strong></h3>
+            <br/>
+            
+            <table class="record_properties">
+                <tbody style='text-align:left;'>
+                    <tr>
+                        <th>Correo: </th>
+                        <td>{{ entity.usuarioEmail }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nombre: </th>
+                        <td>{{ entity.usuarioNombre }}</td>
+                    </tr>
+                    <tr>
+                        <th>Apellido: </th>
+                        <td>{{ entity.usuarioApellido }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Documento: </th>
+                        <td>{{ entity.usuarioDocumento }}</td>
+                    </tr>
+                    <tr>
+                        <th>Rol</th>
+                        <td>{{ entity.usuarioRol }}</td>
+                    </tr>
+                    <tr>
+                        <th>Profesi&oacute;n:</th>
+                        <td>{{ entity.usuarioProfesion }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tel&eacute;fono: </th>
+                        <td>{{ entity.usuarioTelefono }}</td>
+                    </tr>
+                    <tr>
+                        <th>Celular: </th>
+                        <td>{{ entity.usuarioCelular }}</td>
+                    </tr>
+                    <tr>
+                        <th>Activado: </th>
+                        <td>{% if entity.usuarioActivado %}Si{% else %}No{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Permiso Nuevos usuarios: &nbsp; </th>
+                        <td>{% if entity.permisoNuevosUsuarios %}Si{% else %}No{% endif %}</td>
+                    </tr>
+                    {#
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ entity.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Documento: </th>
+                        <td>{{ entity.usuarioTipoDocumento }}</td>
+                    </tr>
+                    <tr>
+                        <th>Usuariofechanacimiento</th>
+                        <td>{{ entity.usuarioFechaNacimiento|date('Y-m-d H:i:s') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Usuariopassword</th>
+                        <td>{{ entity.usuarioPassword }}</td>
+                    </tr>
+                    <tr>
+                        <th>Usuariohash</th>
+                        <td>{{ entity.usuarioHash }}</td>
+                    </tr>
+                    #}
+                    <tr><td colspan="2"><hr></td></tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <a class="btn btn-large" href="{{ path('usuarios') }}">Volver a la lista</a>
+                            <a class="btn btn-large btn-primary" href="{{ path('usuarios_edit', { 'id': entity.id }) }}"> Editar </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="span3">	</div>
+    </div>
+{% endblock %}
