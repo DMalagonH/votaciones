@@ -49,5 +49,40 @@ class TblCandidatos
      */
     private $candidatoPartido;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_descripcion_corta", type="text", nullable=true)
+     */
+    private $candidatoDescripcionCorta;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_descripcion", type="text", nullable=true)
+     */
+    private $candidatoDescripcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_link_facebook", type="string", length=100, nullable=true)
+     */
+    private $candidatoLinkFacebook;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_link_twiter", type="string", length=100, nullable=true)
+     */
+    private $candidatoLinkTwiter;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_link_linkedin", type="string", length=100, nullable=true)
+     */
+    private $candidatoLinkLinkedin;
+
 
 }

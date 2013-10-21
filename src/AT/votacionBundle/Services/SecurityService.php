@@ -289,6 +289,8 @@ class SecurityService
             if($rol == 'user')
             {
                 $permisos = array(
+                    'candidatos',
+                    'detalle_candidato',
                     'resultado_votaciones',
                     // Rutas de votacion
                     'votacion',
@@ -299,6 +301,8 @@ class SecurityService
             elseif('admin')
             {
                 $permisos = array(
+                    'candidatos',
+                    'detalle_candidato',
                     'resultado_votaciones',
                     // Rutas de votacion
                     'votacion',

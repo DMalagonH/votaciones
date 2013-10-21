@@ -1,0 +1,54 @@
+{% extends "::base.html.twig" %}
+
+{% block menu %}
+    {% if sess_user.usuarioRol is defined %}
+        {% if sess_user.usuarioRol == 'user' %}
+            {% include '::menu_votacion.html.twig' %}
+        {% elseif sess_user.usuarioRol == 'admin' %}
+            {% include '::menu_admin.html.twig' %}
+        {% endif %}
+    {% else %}    
+        {% include '::menu_registro.html.twig' %}
+    {% endif %}
+{% endblock menu %}
+
+{% block content %}
+    
+{% if candidatos %}
+    <div class="row">
+        <ul class="team-list sort-destination" data-sort-id="team">
+            {% for candidato in candidatos %}
+                <li class="span3 isotope-item leadership">
+                    <div class="team-item thumbnail">
+                        <a href="{{ path('detalle_candidato', {'id':candidato.id } ) }}" class="thumb-info team" style="cursor:pointer;">
+                            <img alt="" src="{{ asset(candidato.candidatoImagen) }}">
+                            <span class="thumb-info-title">
+                                <span class="thumb-info-inner">{{ candidato.candidatoNombre }}</span>
+                                <span class="thumb-info-type">{{ candidato.candidatoNoTarjeton }}</span>
+                            </span>
+                        </a>
+                        <span class="thumb-info-caption">
+                            {% if candidato.candidatoDescripcionCorta %}
+                                <p>{{ candidato.candidatoDescripcionCorta }}</p>
+                            {% endif %}
+                            <span class="thumb-info-social-icons">
+                                {% if candidato.candidatoLinkFacebook %}
+                                    <a rel="tooltip" data-placement="bottom" target="_blank" href="{{ candidato.candidatoLinkFacebook }}" data-original-title="Facebook"><i class="icon-facebook"></i><span>Facebook</span></a>
+                                {% endif %}
+                                {% if candidato.candidatoLinkTwiter %}
+                                    <a rel="tooltip" data-placement="bottom" target="_blank" href="{{ candidato.candidatoLinkFacebook }}" data-original-title="Twitter"><i class="icon-twitter"></i><span>Twitter</span></a>
+                                {% endif %}
+                                {% if candidato.candidatoLinkLinkedin %}
+                                    <a rel="tooltip" data-placement="bottom" target="_blank" href="{{ candidato.candidatoLinkFacebook }}" data-original-title="Linkedin"><i class="icon-linkedin"></i><span>Linkedin</span></a>
+                                {% endif %}
+                            </span>
+                        </span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>    
+{% endif %}				
+{% endblock content %}
+
+

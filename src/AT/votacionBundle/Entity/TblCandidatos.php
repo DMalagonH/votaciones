@@ -49,6 +49,41 @@ class TblCandidatos
      */
     private $candidatoPartido;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_descripcion_corta", type="text", nullable=true)
+     */
+    private $candidatoDescripcionCorta;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_descripcion", type="text", nullable=true)
+     */
+    private $candidatoDescripcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_link_facebook", type="string", length=100, nullable=true)
+     */
+    private $candidatoLinkFacebook;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_link_twiter", type="string", length=100, nullable=true)
+     */
+    private $candidatoLinkTwiter;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="candidato_link_linkedin", type="string", length=100, nullable=true)
+     */
+    private $candidatoLinkLinkedin;
+
 
 
     /**
@@ -151,5 +186,120 @@ class TblCandidatos
     public function getCandidatoPartido()
     {
         return $this->candidatoPartido;
+    }
+
+    /**
+     * Set candidatoDescripcionCorta
+     *
+     * @param string $candidatoDescripcionCorta
+     * @return TblCandidatos
+     */
+    public function setCandidatoDescripcionCorta($candidatoDescripcionCorta)
+    {
+        $this->candidatoDescripcionCorta = $candidatoDescripcionCorta;
+    
+        return $this;
+    }
+
+    /**
+     * Get candidatoDescripcionCorta
+     *
+     * @return string 
+     */
+    public function getCandidatoDescripcionCorta()
+    {
+        return $this->candidatoDescripcionCorta;
+    }
+
+    /**
+     * Set candidatoDescripcion
+     *
+     * @param string $candidatoDescripcion
+     * @return TblCandidatos
+     */
+    public function setCandidatoDescripcion($candidatoDescripcion)
+    {
+        $this->candidatoDescripcion = $candidatoDescripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get candidatoDescripcion
+     *
+     * @return string 
+     */
+    public function getCandidatoDescripcion()
+    {
+        return $this->candidatoDescripcion;
+    }
+
+    /**
+     * Set candidatoLinkFacebook
+     *
+     * @param string $candidatoLinkFacebook
+     * @return TblCandidatos
+     */
+    public function setCandidatoLinkFacebook($candidatoLinkFacebook)
+    {
+        $this->candidatoLinkFacebook = $candidatoLinkFacebook;
+    
+        return $this;
+    }
+
+    /**
+     * Get candidatoLinkFacebook
+     *
+     * @return string 
+     */
+    public function getCandidatoLinkFacebook()
+    {
+        return $this->candidatoLinkFacebook;
+    }
+
+    /**
+     * Set candidatoLinkTwiter
+     *
+     * @param string $candidatoLinkTwiter
+     * @return TblCandidatos
+     */
+    public function setCandidatoLinkTwiter($candidatoLinkTwiter)
+    {
+        $this->candidatoLinkTwiter = $candidatoLinkTwiter;
+    
+        return $this;
+    }
+
+    /**
+     * Get candidatoLinkTwiter
+     *
+     * @return string 
+     */
+    public function getCandidatoLinkTwiter()
+    {
+        return $this->candidatoLinkTwiter;
+    }
+
+    /**
+     * Set candidatoLinkLinkedin
+     *
+     * @param string $candidatoLinkLinkedin
+     * @return TblCandidatos
+     */
+    public function setCandidatoLinkLinkedin($candidatoLinkLinkedin)
+    {
+        $this->candidatoLinkLinkedin = $candidatoLinkLinkedin;
+    
+        return $this;
+    }
+
+    /**
+     * Get candidatoLinkLinkedin
+     *
+     * @return string 
+     */
+    public function getCandidatoLinkLinkedin()
+    {
+        return $this->candidatoLinkLinkedin;
     }
 }
